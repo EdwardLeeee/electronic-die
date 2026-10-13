@@ -1,0 +1,17 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  simulate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install simulators
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends iverilog ghdl make
+      - name: Tool versions
+        run: iverilog -V | head -1; ghdl --version | head -1; python3 --version
+      - name: Run all self-checking tests
+        run: make test

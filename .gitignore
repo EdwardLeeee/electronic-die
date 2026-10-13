@@ -36,3 +36,4 @@ work-obj*/
 **/synth/quartus/**/*.sta.rpt
 **/synth/quartus/**/*.asm.rpt
 **/synth/quartus/**/*.ipregen.rpt
+local.mk

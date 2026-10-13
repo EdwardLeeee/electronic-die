@@ -12,7 +12,8 @@ and takes its next value from a 16-entry lookup table.  The die value is
 This file is both a library and a command-line tool:
 
     python3 model/ca_rng.py check                     # reproduce the ModelSim run
-    python3 model/ca_rng.py vectors --seed 122059 --steps 256 --out file.txt
+    python3 model/ca_rng.py vectors --seed 122059 --steps 256 --out states.txt --die-out die.txt
+    python3 model/ca_rng.py die --seed 122059 --steps 16
 """
 from __future__ import annotations
 
@@ -74,6 +75,14 @@ def cmd_check(args: argparse.Namespace) -> int:
 
 
 def cmd_vectors(args: argparse.Namespace) -> int:
+    """Write the expected per-clock RNG states (and optionally the die values).
+
+    states file: one 64-bit binary line per clock, line 0 is the seed itself.
+    die file:    one 3-bit binary line per clock, line k = (state[k] mod 6) + 1.
+    Both are in $readmemb / textio friendly form.  The testbenches apply the
+    `en` protocol themselves (see docs/verification.md), so these files are
+    independent of any mod-6 implementation in the RTL.
+    """
     seq = rng_sequence(args.seed, args.steps)
     text = "\n".join(fmt(s) for s in seq) + "\n"
     if args.out:
@@ -81,6 +90,9 @@ def cmd_vectors(args: argparse.Namespace) -> int:
         Path(args.out).write_text(text)
     else:
         sys.stdout.write(text)
+    if args.die_out:
+        Path(args.die_out).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.die_out).write_text("\n".join(format(die_value(s), "03b") for s in seq) + "\n")
     return 0
 
 
@@ -97,7 +109,8 @@ def main(argv: list[str] | None = None) -> int:
     v = sub.add_parser("vectors", help="write expected RNG states, one 64-bit binary line per clock")
     v.add_argument("--seed", type=lambda x: int(x, 0), default=122059)
     v.add_argument("--steps", type=int, default=256)
-    v.add_argument("--out", default=None)
+    v.add_argument("--out", default=None, help="states file (default: stdout)")
+    v.add_argument("--die-out", default=None, help="also write the die value per clock to this file")
     v.set_defaults(fn=cmd_vectors)
     d = sub.add_parser("die", help="print state and die value per clock")
     d.add_argument("--seed", type=lambda x: int(x, 0), default=122059)
