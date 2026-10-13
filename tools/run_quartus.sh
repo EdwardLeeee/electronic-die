@@ -19,9 +19,12 @@ for v in "${variants[@]}"; do
     d="$here/electronic-die/synth/quartus/variants/$v"
     echo "== $v"
     start=$SECONDS
+    stamp="$d/.compile-start"; touch "$stamp"
     ( cd "$d" && "${qsh[@]}" --flow compile "$v" > "$v.compile.log" 2>&1 ) || {
         echo "   FAILED, see $d/$v.compile.log"; grep -m5 -i "error" "$d/$v.compile.log" || true; exit 1; }
-    echo "   ok in $((SECONDS - start)) s: $(grep -m1 'Actual Time' "$d/$v.tan.summary" | sed -n '4p' || true)"
+    [ "$d/$v.tan.summary" -nt "$stamp" ] || { echo "   FAILED: no new $v.tan.summary"; exit 1; }
+    rm -f "$stamp"
+    echo "   ok in $((SECONDS - start)) s: $(grep 'Actual Time' "$d/$v.tan.summary" | sed -n '4p' | tr -d '\r' | sed 's/.*: //')"
 done
 python3 -I "$here/tools/quartus.py" generate > /dev/null   # Quartus rewrites the .qsf with CRLF
 python3 -I "$here/tools/quartus.py" collect > /dev/null

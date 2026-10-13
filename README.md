@@ -14,7 +14,10 @@ The RTL in `electronic-die/rtl/{verilog,vhdl}` and
 `electronic-die/sim/modelsim*`, the original Quartus project in
 `electronic-die/synth/quartus/`, and the RAM controller in
 `ram-controller/rtl/` are homework for *Computer-Aided Design for VLSI
-Design* at National Taiwan Normal University (spring 2026). Their logic is
+Design* at National Taiwan Normal University (spring 2026). They are kept as
+submitted: the original Quartus and ModelSim scripts refer to the flat
+course folders and are records, not meant to be rerun from this layout
+(recompiles go through `electronic-die/synth/quartus/variants/`). Their logic is
 unchanged; only the seed and the activation code became parameters, and the
 RAM controller entity was renamed from `hw3` to `seq_rw_ram` (its original
 Quartus summaries still show `hw3`).
@@ -25,7 +28,8 @@ Everything else was added afterwards:
 |---|---|
 | Python reference model that reproduces the original ModelSim runs | `model/ca_rng.py` |
 | Cycle-exact timing contracts derived from the RTL | `docs/verification.md` |
-| Self-checking testbenches (Icarus Verilog, GHDL), mutation-tested | `electronic-die/sim/tb_*`, `ram-controller/sim/` |
+| Self-checking testbenches (Icarus Verilog, GHDL) | `electronic-die/sim/tb_*`, `ram-controller/sim/` |
+| Mutation testing: deliberately broken copies of the RTL that the tests must reject | `tools/mutants.py`, `docs/logs/mutants.txt` |
 | `make test` and a CI workflow | `Makefile`, `.github/workflows/test.yml` |
 | RNG quality measurements | `model/rng_analysis.py`, `docs/rng_analysis.md` |
 | Division-free mod-6 cores, pipelined top level (Verilog; residue core also in VHDL) | `electronic-die/rtl/{verilog,vhdl}/mod6_*`, `electronic_die_fast.*` |
@@ -83,7 +87,8 @@ make test                                           # every self-checking test
 ```
 
 Without root, the same Ubuntu packages can be unpacked into a directory and
-used from there:
+used from there (run from the repository root; amd64 or any other Debian
+architecture):
 
 ```
 mkdir -p ~/.cache/eda-debs && cd ~/.cache/eda-debs
@@ -95,9 +100,10 @@ cd -  &&  ~/.local/opt/eda/usr/bin/make test EDA_HOME=$HOME/.local/opt/eda
 | Target | What it checks |
 |---|---|
 | `make test-model` | the Python model reproduces both committed ModelSim outputs |
-| `make test-verilog`, `make test-vhdl` | RNG and die, structural and behavioural, four seeds, every clock |
+| `make test-verilog`, `make test-vhdl` | RNG and die, structural and behavioural, six seeds (the course seed, a dense seed, the four CA fixed points), every clock |
 | `make test-ram` | the RAM controller: bursts, wrong ID, write priority, read latency |
 | `make test-m3` | both mod-6 cores against `%` (all 16-bit inputs, random 64-bit) and the pipelined die, Verilog and VHDL |
+| `make test-mutants` | every mutant in `tools/mutants.py` must make its test fail (not part of `make test`; a few minutes) |
 
 The synthesis numbers come from Quartus II 9.0 SP2 Web Edition, the version
 the course used (current Quartus releases no longer support Stratix II):

@@ -61,14 +61,15 @@ module mod6_residue #(
 
     // Heap-ordered tree: node j has children 2j and 2j+1; leaves are
     // LEAVES .. 2*LEAVES-1; node 1 is the root.  Two bits per node.
-    wire [2*LEAVES-1:0] h = {{(2*LEAVES - (WIDTH - 1)){1'b0}}, x[WIDTH-1:1]};
+    wire [2*LEAVES-1:0] h = x[WIDTH-1:1];       // zero-extended: 2*LEAVES >= WIDTH-1
     wire [4*LEAVES-1:0] node;
 
     genvar l, i;
     generate
         if (WIDTH < 4 || STAGES < 0 || STAGES > LOG) begin : bad_parameters
-            initial $display("mod6_residue: need WIDTH >= 4 and 0 <= STAGES <= %0d", LOG);
-            assign node = {4*LEAVES{1'bx}};
+            // Verilog-2001 has no elaboration-time $error: instantiating a module that
+            // does not exist makes every simulator and synthesizer stop here.
+            mod6_residue_needs_WIDTH_ge_4_and_STAGES_le_LOG parameter_check ();
         end else begin : tree
             for (i = 0; i < LEAVES; i = i + 1) begin : digit
                 assign node[2*(LEAVES + i) +: 2] = h[2*i +: 2];

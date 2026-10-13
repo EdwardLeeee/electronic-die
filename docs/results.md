@@ -15,9 +15,9 @@ was run on a board.
 | percent_s0 | new top, original % operator, no pipeline (wrapper sanity check) | 0 | 684 | 618 | 68 | 10.96 | 1.0x | 91.256 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
 | percent_s1 | original % operator plus one output register (naive registered) | 1 | 686 | 620 | 72 | 11.30 | 1.0x | 88.505 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `percent.delay[1].q[2]` |
 | popcount_s0 | two popcount trees then mod 3, 0 pipeline stage(s) | 0 | 202 | 130 | 72 (68+4 dup.) | 75.95 | 6.9x | 13.166 | `rng64:rng_inst|ca_cell:ca_generate[33].ca_array|y` to `result_reg[1]` |
-| popcount_s1 | two popcount trees then mod 3, 1 pipeline stage(s) | 1 | 206 | 138 | 102 | 87.72 | 8.0x | 11.400 | `mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]` to `result_reg[2]` |
-| popcount_s2 | two popcount trees then mod 3, 2 pipeline stage(s) | 2 | 202 | 134 | 139 | 103.01 | 9.4x | 9.708 | `mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]` to `result_reg[2]` |
-| popcount_s3 | two popcount trees then mod 3, 3 pipeline stage(s) | 3 | 214 | 146 | 165 | 115.22 | 10.5x | 8.679 | `mod6_popcount:popcount.mod_inst|level[0].n[0].registered.oq[3]` to `result_reg[2]` |
+| popcount_s1 | two popcount trees then mod 3, 1 pipeline stage(s) | 1 | 206 | 138 | 102 | 87.72 | 8.0x | 11.400 | `mod6_popcount:popcount.mod_inst|trees.level[2].n[1].registered.eq[0]` to `result_reg[2]` |
+| popcount_s2 | two popcount trees then mod 3, 2 pipeline stage(s) | 2 | 202 | 134 | 139 | 103.01 | 9.4x | 9.708 | `mod6_popcount:popcount.mod_inst|trees.level[1].n[0].registered.oq[3]` to `result_reg[2]` |
+| popcount_s3 | two popcount trees then mod 3, 3 pipeline stage(s) | 3 | 214 | 146 | 165 | 115.22 | 10.5x | 8.679 | `mod6_popcount:popcount.mod_inst|trees.level[0].n[0].registered.oq[3]` to `result_reg[2]` |
 | residue_s0 | mod-3 adder tree over base-4 digits, 0 pipeline stage(s) | 0 | 110 | 41 | 69 (68+1 dup.) | 270.86 | 24.7x | 3.692 | `rng64:rng_inst|ca_cell:ca_generate[58].ca_array|y` to `result_reg[2]` |
 | residue_s1 | mod-3 adder tree over base-4 digits, 1 pipeline stage(s) | 1 | 113 | 45 | 78 | 468.38 | 42.7x | 2.135 | `rng64:rng_inst|ca_cell:ca_generate[2].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[2].n[0].registered.q[0]` |
 | residue_s2 | mod-3 adder tree over base-4 digits, 2 pipeline stage(s) | 2 | 108 | 40 | 92 | 500.00 (cap) | 45.6x (cap) | 1.829 | `rng64:rng_inst|ca_cell:ca_generate[35].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[3].n[4].registered.q[1]` |

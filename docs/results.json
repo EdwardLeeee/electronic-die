@@ -71,7 +71,7 @@
   },
   {
     "variant": "percent_s0",
-    "status": "Successful - Wed Oct 14 00:22:07 2026",
+    "status": "Successful - Wed Oct 14 01:07:10 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -102,7 +102,7 @@
   },
   {
     "variant": "percent_s1",
-    "status": "Successful - Wed Oct 14 00:22:23 2026",
+    "status": "Successful - Wed Oct 14 01:07:26 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -133,7 +133,7 @@
   },
   {
     "variant": "popcount_s0",
-    "status": "Successful - Wed Oct 14 00:22:37 2026",
+    "status": "Successful - Wed Oct 14 01:07:40 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -164,7 +164,7 @@
   },
   {
     "variant": "popcount_s1",
-    "status": "Successful - Wed Oct 14 00:22:46 2026",
+    "status": "Successful - Wed Oct 14 01:07:49 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -173,7 +173,7 @@
     "fmax_mhz": 87.72,
     "period_ns": 11.4,
     "fmax_note": "",
-    "critical_from": "mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]",
+    "critical_from": "mod6_popcount:popcount.mod_inst|trees.level[2].n[1].registered.eq[0]",
     "critical_to": "result_reg[2]",
     "tsu_ns": 3.914,
     "tco_ns": 6.252,
@@ -195,7 +195,7 @@
   },
   {
     "variant": "popcount_s2",
-    "status": "Successful - Wed Oct 14 00:22:54 2026",
+    "status": "Successful - Wed Oct 14 01:07:58 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -204,7 +204,7 @@
     "fmax_mhz": 103.01,
     "period_ns": 9.708,
     "fmax_note": "",
-    "critical_from": "mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]",
+    "critical_from": "mod6_popcount:popcount.mod_inst|trees.level[1].n[0].registered.oq[3]",
     "critical_to": "result_reg[2]",
     "tsu_ns": 4.11,
     "tco_ns": 6.649,
@@ -226,7 +226,7 @@
   },
   {
     "variant": "popcount_s3",
-    "status": "Successful - Wed Oct 14 00:23:03 2026",
+    "status": "Successful - Wed Oct 14 01:08:07 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -235,7 +235,7 @@
     "fmax_mhz": 115.22,
     "period_ns": 8.679,
     "fmax_note": "",
-    "critical_from": "mod6_popcount:popcount.mod_inst|level[0].n[0].registered.oq[3]",
+    "critical_from": "mod6_popcount:popcount.mod_inst|trees.level[0].n[0].registered.oq[3]",
     "critical_to": "result_reg[2]",
     "tsu_ns": 4.05,
     "tco_ns": 6.105,
@@ -257,7 +257,7 @@
   },
   {
     "variant": "residue_s0",
-    "status": "Successful - Wed Oct 14 00:23:11 2026",
+    "status": "Successful - Wed Oct 14 01:08:16 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -288,7 +288,7 @@
   },
   {
     "variant": "residue_s1",
-    "status": "Successful - Wed Oct 14 00:23:20 2026",
+    "status": "Successful - Wed Oct 14 01:08:25 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -319,7 +319,7 @@
   },
   {
     "variant": "residue_s2",
-    "status": "Successful - Wed Oct 14 00:23:28 2026",
+    "status": "Successful - Wed Oct 14 01:08:33 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -350,7 +350,7 @@
   },
   {
     "variant": "residue_s3",
-    "status": "Successful - Wed Oct 14 00:23:37 2026",
+    "status": "Successful - Wed Oct 14 01:08:42 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -409,7 +409,7 @@
   },
   {
     "variant": "vhdl_residue_s0",
-    "status": "Successful - Wed Oct 14 00:37:14 2026",
+    "status": "Successful - Wed Oct 14 01:08:51 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -440,7 +440,7 @@
   },
   {
     "variant": "vhdl_residue_s1",
-    "status": "Successful - Wed Oct 14 00:37:23 2026",
+    "status": "Successful - Wed Oct 14 01:08:59 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",
@@ -471,7 +471,7 @@
   },
   {
     "variant": "vhdl_residue_s2",
-    "status": "Successful - Wed Oct 14 00:37:31 2026",
+    "status": "Successful - Wed Oct 14 01:09:08 2026",
     "quartus": "9.0 Build 235 06/17/2009 SP 2 SJ Web Edition",
     "device": "EP2S15F484C3",
     "top": "electronic_die_fast",

@@ -1,13 +1,15 @@
 # digital-design-projects: simulation and self-checking tests.
 #
 #   make test                       tools on PATH (iverilog, vvp, ghdl, python3)
-#   make test EDA_HOME=~/.local/opt/eda
+#   make test EDA_HOME=$HOME/.local/opt/eda
 #                                   tools unpacked from .deb files with dpkg -x
 #                                   (no root needed); see README.
 #   make test-verilog / test-vhdl / test-ram / test-model / test-m3  run one group
 #   make test-m3 EQ_N=200000        longer random equivalence run for the mod-6 cores
+#   make test-mutants               break the RTL on purpose (tools/mutants.py); every
+#                                   mutant must make its test fail
 #
-# Every test exits non-zero on the first mismatch, so a red run is a red run.
+# Every test exits non-zero when any check fails, so a red run is a red run.
 
 PYTHON   ?= python3
 IVERILOG ?= iverilog
@@ -18,7 +20,7 @@ GHDL     ?= ghdl
 -include local.mk
 
 ifneq ($(strip $(EDA_HOME)),)
-IVL_DIR  := $(EDA_HOME)/usr/lib/x86_64-linux-gnu/ivl
+IVL_DIR  := $(firstword $(wildcard $(EDA_HOME)/usr/lib/*/ivl))
 IVERILOG := $(EDA_HOME)/usr/bin/iverilog -B$(IVL_DIR)
 VVP      := $(EDA_HOME)/usr/bin/vvp -M$(IVL_DIR)
 GHDL     := $(EDA_HOME)/usr/bin/ghdl
@@ -28,7 +30,7 @@ endif
 IVFLAGS   ?= -g2012 -Wall -Wno-timescale
 GHDLFLAGS ?= --std=08
 
-BUILD := build
+BUILD ?= build
 VEC   := $(BUILD)/vec
 STEPS ?= 512
 # course seed, an arbitrary dense seed, and the four fixed points of the CA
@@ -36,9 +38,9 @@ STEPS ?= 512
 SEEDS ?= 122059 16045690984503111693 0 18446744073709551615 6148914691236517205 12297829382473034410
 
 MODEL   := model/ca_rng.py
-DIE_RTL := electronic-die/rtl
+DIE_RTL ?= electronic-die/rtl
 DIE_SIM := electronic-die/sim
-RAM_RTL := ram-controller/rtl
+RAM_RTL ?= ram-controller/rtl
 RAM_SIM := ram-controller/sim
 
 V_STRUCT := $(DIE_RTL)/verilog/ca_cell.v $(DIE_RTL)/verilog/rng64.v \
@@ -54,7 +56,7 @@ H_FAST   := $(DIE_RTL)/vhdl/mod6_residue.vhd $(DIE_RTL)/vhdl/electronic_die_fast
 
 VECFILES := $(foreach s,$(SEEDS),$(VEC)/$(s).states $(VEC)/$(s).die)
 
-.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl clean
+.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl check-vhdl93 test-mutants clean
 .DELETE_ON_ERROR:
 
 all: test
@@ -98,7 +100,7 @@ test-verilog: $(VECFILES) $(BUILD)/tb_rng64_structural.vvp $(BUILD)/tb_rng64_beh
 # --- M3: mod-6 cores and the pipelined die (Verilog) -------------------------
 # Equivalence with %: "core width max_stages"; WIDTH 16 is exhaustive.
 EQ_N       ?= 20000
-EQ_CONFIGS := "1 16 4" "1 64 6" "2 16 3" "2 64 5"
+EQ_CONFIGS ?= "1 16 4" "1 64 6" "2 16 3" "2 64 5"
 # Die-level contract: "core stages"
 FAST_CONFIGS ?= "0 0" "0 1" "0 2" "1 0" "1 1" "1 2" "1 3" "2 0" "2 1" "2 2" "2 3"
 
@@ -151,10 +153,16 @@ test-vhdl: $(VECFILES) $(GHDL_WORK)/.analysed
 	done
 
 # VHDL counterpart of test-m3 (mod6_residue and electronic_die_fast, CORE 0 and 2)
-VHDL_EQ_CONFIGS   := "16 3" "64 5"
+VHDL_EQ_CONFIGS   ?= "16 3" "64 5"
 VHDL_FAST_CONFIGS ?= "0 0" "0 1" "2 0" "2 1" "2 2" "2 3"
 
-test-m3-vhdl: $(VECFILES) $(GHDL_WORK)/.analysed
+# Quartus II 9.0 reads VHDL-93: analyse the synthesizable VHDL in strict 93 mode.
+check-vhdl93: $(H_STRUCT) $(H_FAST)
+	@mkdir -p $(BUILD)/ghdl93
+	$(GHDL) -a --std=93 --workdir=$(BUILD)/ghdl93 $(H_STRUCT) $(H_FAST)
+	@echo "PASS: synthesizable VHDL analyses as strict VHDL-93"
+
+test-m3-vhdl: check-vhdl93 $(VECFILES) $(GHDL_WORK)/.analysed
 	@for cfg in $(VHDL_EQ_CONFIGS); do set -- $$cfg; \
 	  for st in $$(seq 0 $$2); do \
 	    $(GHDL_RUN) tb_mod6_equiv -gWIDTH=$$1 -gSTAGES=$$st -gN=$(EQ_N) || exit 1; \
@@ -176,6 +184,11 @@ test-ram: $(RAM_RTL)/seq_rw_ram.vhd $(RAM_SIM)/tb_seq_rw_ram.vhd
 	@mkdir -p $(GHDL_WORK_RAM)
 	$(GHDL) -a $(GHDLFLAGS) --workdir=$(GHDL_WORK_RAM) $(RAM_RTL)/seq_rw_ram.vhd $(RAM_SIM)/tb_seq_rw_ram.vhd
 	$(GHDL) --elab-run $(GHDLFLAGS) --workdir=$(GHDL_WORK_RAM) tb_seq_rw_ram
+
+# --- mutation testing: tools/mutants.py copies the RTL, breaks one thing, and
+# reruns a narrowed version of the target above; the run must fail.
+test-mutants:
+	$(PYTHON) -I tools/mutants.py --make "$(MAKE)" --log docs/logs/mutants.txt
 
 clean:
 	rm -rf $(BUILD)

@@ -49,10 +49,12 @@ module electronic_die_fast (
             wire [2:0] rem;
             mod6_popcount #(.WIDTH(64), .STAGES(STAGES)) mod_inst (.clk(clk), .x(rng_value), .rem(rem));
             assign die_value = rem + 3'd1;
-        end else begin : residue
+        end else if (CORE == 2) begin : residue
             wire [2:0] rem;
             mod6_residue #(.WIDTH(64), .STAGES(STAGES)) mod_inst (.clk(clk), .x(rng_value), .rem(rem));
             assign die_value = rem + 3'd1;
+        end else begin : bad_parameters
+            electronic_die_fast_needs_CORE_0_1_or_2 parameter_check ();   // elaboration error
         end
     endgenerate
 

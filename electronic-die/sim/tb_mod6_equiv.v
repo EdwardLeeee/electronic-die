@@ -2,7 +2,9 @@
 // Equivalence of the mod-6 cores with Verilog's % operator.
 //   -Ptb_mod6_equiv.CORE=1   mod6_popcount      -Ptb_mod6_equiv.CORE=2   mod6_residue
 //   -Ptb_mod6_equiv.WIDTH=<w> -Ptb_mod6_equiv.STAGES=<s>
-// WIDTH <= 20: every input value.  Otherwise directed corner cases (0, all
+// WIDTH <= 20: every input value, visited in a scrambled order (a bijection,
+// so that bit 0 is not simply periodic and a pipeline-latency error cannot
+// hide).  Otherwise directed corner cases (0, all
 // ones, every single bit set or cleared, alternating patterns, largest
 // multiples of 6) followed by +n=<N> random values (default 200000).
 // One new input per clock; rem is checked STAGES clocks later.
@@ -31,6 +33,16 @@ module tb_mod6_equiv;
     reg [2:0]       want;
     integer n, total, k, errors, nrand, directed;
     integer s;
+
+    // Bijection on WIDTH-bit values: odd multiply, xorshift, odd multiply.
+    function [WIDTH-1:0] scramble(input [WIDTH-1:0] i);
+        reg [WIDTH-1:0] y;
+        begin
+            y = i * 64'h9E3779B97F4A7C15;
+            y = y ^ (y >> (WIDTH / 2));
+            scramble = y * 64'hBF58476D1CE4E5B9;
+        end
+    endfunction
 
     // Directed value number k (k < 4*WIDTH + 8).
     function [WIDTH-1:0] corner(input integer k);
@@ -64,7 +76,7 @@ module tb_mod6_equiv;
         for (n = 0; n < total + STAGES; n = n + 1) begin
             @(negedge clk);
             if (n < total) begin
-                if (EXHAUSTIVE)        v = n;
+                if (EXHAUSTIVE)        v = scramble(n);
                 else if (n < directed) v = corner(n);
                 else                   for (k = 0; k < WIDTH; k = k + 32) v = {v, $random(s)};
             end else

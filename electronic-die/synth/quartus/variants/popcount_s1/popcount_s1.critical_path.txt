@@ -1,9 +1,9 @@
-Info: Clock "clk" has Internal fmax of 87.72 MHz between source register "mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]" and destination register "result_reg[2]" (period= 11.4 ns)
+Info: Clock "clk" has Internal fmax of 87.72 MHz between source register "mod6_popcount:popcount.mod_inst|trees.level[2].n[1].registered.eq[0]" and destination register "result_reg[2]" (period= 11.4 ns)
     Info: + Longest register to register delay is 11.217 ns
-        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]'
+        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|trees.level[2].n[1].registered.eq[0]'
         Info: 2: + IC(0.758 ns) + CELL(0.371 ns) = 1.129 ns; Loc. = LCCOMB_X33_Y17_N16; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add3~1'
-        Info: 3: + IC(0.292 ns) + CELL(0.263 ns) = 1.684 ns; Loc. = LCCOMB_X33_Y17_N0; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|level[0].n[0].esum[0]~3'
-        Info: 4: + IC(0.000 ns) + CELL(0.312 ns) = 1.996 ns; Loc. = LCCOMB_X33_Y17_N2; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|level[0].n[0].esum[1]~1'
+        Info: 3: + IC(0.292 ns) + CELL(0.263 ns) = 1.684 ns; Loc. = LCCOMB_X33_Y17_N0; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|trees.level[0].n[0].esum[0]~3'
+        Info: 4: + IC(0.000 ns) + CELL(0.312 ns) = 1.996 ns; Loc. = LCCOMB_X33_Y17_N2; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|trees.level[0].n[0].esum[1]~1'
         Info: 5: + IC(0.724 ns) + CELL(0.350 ns) = 3.070 ns; Loc. = LCCOMB_X34_Y18_N18; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~6'
         Info: 6: + IC(0.000 ns) + CELL(0.035 ns) = 3.105 ns; Loc. = LCCOMB_X34_Y18_N20; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~10'
         Info: 7: + IC(0.000 ns) + CELL(0.035 ns) = 3.140 ns; Loc. = LCCOMB_X34_Y18_N22; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~14'
@@ -41,7 +41,7 @@ Info: Clock "clk" has Internal fmax of 87.72 MHz between source register "mod6_p
         Info: - Longest clock path from clock "clk" to source register is 2.476 ns
             Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
             Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 102; COMB Node = 'clk~clkctrl'
-            Info: 3: + IC(0.661 ns) + CELL(0.618 ns) = 2.476 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]'
+            Info: 3: + IC(0.661 ns) + CELL(0.618 ns) = 2.476 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|trees.level[2].n[1].registered.eq[0]'
             Info: Total cell delay = 1.472 ns ( 59.45 % )
             Info: Total interconnect delay = 1.004 ns ( 40.55 % )
     Info: + Micro clock to output delay of source is 0.094 ns

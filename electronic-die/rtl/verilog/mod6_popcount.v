@@ -67,28 +67,31 @@ module mod6_popcount #(
     wire [CW*2*LEAVES-1:0] enode;
     generate
         if (WIDTH < 4 || STAGES < 0 || STAGES > DEPTH) begin : bad_parameters
-            initial $display("mod6_popcount: need WIDTH >= 4 and 0 <= STAGES <= %0d", DEPTH);
-        end
-        for (i = 0; i < LEAVES; i = i + 1) begin : leaf
-            assign onode[CW*(LEAVES + i) +: CW] = {{(CW-1){1'b0}}, odd_bits[i]};
-            assign enode[CW*(LEAVES + i) +: CW] = {{(CW-1){1'b0}}, even_bits[i]};
-        end
-        for (l = 0; l < LOG; l = l + 1) begin : level
-            for (i = 0; i < (1 << l); i = i + 1) begin : n
-                wire [CW-1:0] osum = onode[CW*(2*((1 << l) + i)) +: CW] + onode[CW*(2*((1 << l) + i) + 1) +: CW];
-                wire [CW-1:0] esum = enode[CW*(2*((1 << l) + i)) +: CW] + enode[CW*(2*((1 << l) + i) + 1) +: CW];
-                if (CUTS[LOG - l]) begin : registered
-                    reg [CW-1:0] oq = {CW{1'b0}};
-                    reg [CW-1:0] eq = {CW{1'b0}};
-                    always @(posedge clk) begin
-                        oq <= osum;
-                        eq <= esum;
+            // Verilog-2001 has no elaboration-time $error: instantiating a module that
+            // does not exist makes every simulator and synthesizer stop here.
+            mod6_popcount_needs_WIDTH_ge_4_and_STAGES_le_DEPTH parameter_check ();
+        end else begin : trees
+            for (i = 0; i < LEAVES; i = i + 1) begin : leaf
+                assign onode[CW*(LEAVES + i) +: CW] = {{(CW-1){1'b0}}, odd_bits[i]};
+                assign enode[CW*(LEAVES + i) +: CW] = {{(CW-1){1'b0}}, even_bits[i]};
+            end
+            for (l = 0; l < LOG; l = l + 1) begin : level
+                for (i = 0; i < (1 << l); i = i + 1) begin : n
+                    wire [CW-1:0] osum = onode[CW*(2*((1 << l) + i)) +: CW] + onode[CW*(2*((1 << l) + i) + 1) +: CW];
+                    wire [CW-1:0] esum = enode[CW*(2*((1 << l) + i)) +: CW] + enode[CW*(2*((1 << l) + i) + 1) +: CW];
+                    if (CUTS[LOG - l]) begin : registered
+                        reg [CW-1:0] oq = {CW{1'b0}};
+                        reg [CW-1:0] eq = {CW{1'b0}};
+                        always @(posedge clk) begin
+                            oq <= osum;
+                            eq <= esum;
+                        end
+                        assign onode[CW*((1 << l) + i) +: CW] = oq;
+                        assign enode[CW*((1 << l) + i) +: CW] = eq;
+                    end else begin : combinational
+                        assign onode[CW*((1 << l) + i) +: CW] = osum;
+                        assign enode[CW*((1 << l) + i) +: CW] = esum;
                     end
-                    assign onode[CW*((1 << l) + i) +: CW] = oq;
-                    assign enode[CW*((1 << l) + i) +: CW] = eq;
-                end else begin : combinational
-                    assign onode[CW*((1 << l) + i) +: CW] = osum;
-                    assign enode[CW*((1 << l) + i) +: CW] = esum;
                 end
             end
         end

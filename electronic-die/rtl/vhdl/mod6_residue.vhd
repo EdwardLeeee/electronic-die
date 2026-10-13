@@ -92,7 +92,7 @@ begin
     end generate;
 
     g_level : for l in 0 to LOG - 1 generate
-        g_node : for i in 0 to 2 ** l - 1 generate
+        g_node : for i in natural range 0 to 2 ** l - 1 generate
             constant J : positive := 2 ** l + i;
             signal sum : unsigned(1 downto 0);
         begin

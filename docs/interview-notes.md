@@ -23,18 +23,20 @@ edge.
 `modulo_by_6.v` is one line, `rng_value % 6`. Quartus implements `%` with
 its generic divider (`lpm_divide`), which for a 64-bit dividend is a chain
 of 64 conditional-subtract steps. The critical path runs from a CA register
-through **298 logic cells** of that divider into `result_reg`: 91.256 ns,
+through **298 logic cells** (297 in the divider, then the +1 adder) into
+`result_reg`: 91.256 ns,
 of which 53.4 ns is interconnect (`variants/baseline/baseline.critical_path.txt`).
-The divider also costs 616 of the design's 684 ALUTs
-(`variants/baseline/baseline.entities.txt`).
+The `%` stage costs 618 of the design's 684 ALUTs, 616 of them in the
+divider itself (`variants/baseline/baseline.entities.txt`).
 
 The VHDL submission is slower still: 4,359 ALUTs and 4.57 MHz, both in
 the June course run and in the recompile here. Its `modulo_by_6.vhd` writes
 `unsigned(rng_value) mod to_unsigned(6, 64)`, and Quartus infers a divider
 with a 64-bit divisor (`LPM_WIDTHD=64`) instead of the 3-bit one it infers
-for Verilog's `% 6` (`LPM_WIDTHD=3`); see `variants/vhdl_baseline/vhdl_baseline.entities.txt`. Same
-arithmetic, but the width of a constant changed the hardware by a factor of
-seven.
+for Verilog's `% 6` (`LPM_WIDTHD=3`); see `variants/baseline/baseline.entities.txt`
+and `variants/vhdl_baseline/vhdl_baseline.entities.txt`. Same arithmetic, but
+the width of a constant made the divider about seven times larger (616 to
+4,288 ALUTs).
 
 The 64 `ca_cell` instances are not the problem: each is one lookup table
 plus a register, and the CA-to-CA path is a single logic level.
@@ -89,7 +91,7 @@ random 64-bit inputs (`electronic-die/sim/tb_mod6_equiv.v`).
 - **`mod6_residue`**: never forms a count. A perfect binary tree of identical
   nodes, each `(a + b) mod 3` on two 2-bit residues, which is a 4-input,
   2-output function: one lookup table per output bit. 32 digits need
-  log2(32) = 5 levels. 41 ALUTs for the mod-6 logic (the divider used 618)
+  log2(32) = 5 levels. 41 ALUTs for the mod-6 logic (the `%` stage used 618)
   and 270.86 MHz with no pipeline at all: 24.7 times the baseline, from
   arithmetic alone. Critical path: 5 logic levels, 3.692 ns.
 
@@ -115,7 +117,7 @@ Results (docs/results.md):
 
 | Variant | ALUTs (total / mod 6) | fmax | Note |
 |---|---:|---:|---|
-| baseline (course design) | 684 / 618 | 10.96 MHz | 298-level divider path |
+| baseline (course design) | 684 / 618 | 10.96 MHz | 298-level path through the divider |
 | residue, 0 stages | 110 / 41 | 270.86 MHz | 5 logic levels |
 | residue, 1 stage | 113 / 45 | 468.38 MHz | |
 | residue, 2 stages | 108 / 40 | 500 MHz (cap) | slowest path needs 1.829 ns of the 2.000 ns |
@@ -123,7 +125,8 @@ Results (docs/results.md):
 
 500 MHz is reported as "fmax restricted to clock pin edge rate 2.0 ns": the
 clock input pin, not the logic, sets the limit. So two stages is the
-sensible stopping point on this device; a third stage only adds registers.
+sensible stopping point on this device; a third stage adds 10 registers and
+4 ALUTs and gains nothing (both are capped at 500 MHz).
 
 ## 6. How the verification is built
 
@@ -131,12 +134,15 @@ sensible stopping point on this device; a third stage only adds registers.
   ModelSim output files line for line (`python3 -I model/ca_rng.py check`).
 - The model writes expected CA states and die values; the testbenches apply
   the `en` protocol themselves, so they do not trust any mod-6 hardware.
-- Each bench checks every clock and exits non-zero on the first mismatch,
-  so `make test` and CI fail loudly.
-- The benches were mutation-tested: deliberately broken copies of the RTL
-  (a wrong table entry, `en` ignored, `% 7`, an update on the seed-loading
-  edge, an extra cycle of latency, a wrong mod-3 node, a dropped digit, a
-  misaligned `b0`, a valid bit one cycle early) all fail.
+- Each bench checks every clock and exits non-zero if any check fails (the
+  RNG and die benches stop after five mismatches; the equivalence benches
+  report the total at the end), so `make test` and CI fail loudly.
+- The benches are mutation-tested: `make test-mutants` (`tools/mutants.py`)
+  copies the RTL, breaks one thing (a wrong table entry, `en` ignored, `% 7`,
+  an update on the seed-loading edge, a wrong neighbour, an extra cycle of
+  latency, a wrong mod-3 node, a dropped digit, a misaligned `b0`, a valid bit
+  one cycle early, ...) and requires the matching test to fail; every mutant
+  is caught (`docs/logs/mutants.txt`).
 - The four fixed points are tested on purpose: all zeros and all ones (the
   table maps 0000 to 0 and 1111 to 1) and the two alternating patterns
   0x5555... and 0xAAAA... (every cell sees 0101 or 1010, which map back to

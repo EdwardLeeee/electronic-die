@@ -1,6 +1,6 @@
-Info: Clock "clk" has Internal fmax of 103.01 MHz between source register "mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]" and destination register "result_reg[2]" (period= 9.708 ns)
+Info: Clock "clk" has Internal fmax of 103.01 MHz between source register "mod6_popcount:popcount.mod_inst|trees.level[1].n[0].registered.oq[3]" and destination register "result_reg[2]" (period= 9.708 ns)
     Info: + Longest register to register delay is 9.515 ns
-        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X25_Y13_N7; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]'
+        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X25_Y13_N7; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|trees.level[1].n[0].registered.oq[3]'
         Info: 2: + IC(0.460 ns) + CELL(0.309 ns) = 0.769 ns; Loc. = LCCOMB_X26_Y13_N6; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add0~14'
         Info: 3: + IC(0.000 ns) + CELL(0.125 ns) = 0.894 ns; Loc. = LCCOMB_X26_Y13_N8; Fanout = 3; COMB Node = 'mod6_popcount:popcount.mod_inst|Add0~17'
         Info: 4: + IC(0.316 ns) + CELL(0.545 ns) = 1.755 ns; Loc. = LCCOMB_X26_Y13_N22; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|t[4]~14'
@@ -36,7 +36,7 @@ Info: Clock "clk" has Internal fmax of 103.01 MHz between source register "mod6_
         Info: - Longest clock path from clock "clk" to source register is 2.490 ns
             Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
             Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 139; COMB Node = 'clk~clkctrl'
-            Info: 3: + IC(0.675 ns) + CELL(0.618 ns) = 2.490 ns; Loc. = LCFF_X25_Y13_N7; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]'
+            Info: 3: + IC(0.675 ns) + CELL(0.618 ns) = 2.490 ns; Loc. = LCFF_X25_Y13_N7; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|trees.level[1].n[0].registered.oq[3]'
             Info: Total cell delay = 1.472 ns ( 59.12 % )
             Info: Total interconnect delay = 1.018 ns ( 40.88 % )
     Info: + Micro clock to output delay of source is 0.094 ns

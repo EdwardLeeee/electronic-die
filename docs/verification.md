@@ -8,8 +8,9 @@ hardware is replaced (M3). The testbenches apply the `en` protocol themselves.
 
 ## Conventions
 
-- Verilog: Icarus Verilog, `iverilog -g2012`; a failing check calls `$fatal`,
-  which makes `vvp` exit with status 1. A passing run prints `PASS` and
+- Verilog: Icarus Verilog, `iverilog -g2012`; a failing run ends in `$fatal`,
+  which makes `vvp` exit with status 1 (the RNG and die benches stop after
+  five mismatches, the equivalence benches report the total at the end). A passing run prints `PASS` and
   `$finish`es (status 0).
 - VHDL: GHDL, `--std=08`; a failing run ends with `std.env.finish(1)`
   (status 1), a passing run with `finish(0)`.
@@ -108,13 +109,16 @@ Checks (`tb_seq_rw_ram`):
 3. `Read = 1` and `Write = 1` together with the right ID and new data: a
    write burst happens (`W_En = 1` for eight clocks, later read returns the
    new data) and no read burst (`R_Addr` stays 000 during the burst).
-4. Latency: during a read burst `Data_Output` shows `mem[0]` only after e1,
-   not after e0.
+4. Latency: during a read burst `Data_Output` still shows `mem[0]` after e1
+   and `mem[k]` only after e(k+1); `mem[1]` must not appear before e2. (A
+   check that `mem[0]` is absent after e0 is not possible: the idle FSM
+   already reloads `mem[0]` at e0, because `R_Addr = 000` in `S_IDLE`.)
 
 ## 4. Fast die: `electronic_die_fast` (M3, new timing contract)
 
-Same ports and parameter as `electronic_die`, plus parameter `LATENCY = L`
-(number of register stages inside the mod-6 pipeline).
+Same ports and parameter as `electronic_die`, plus parameters `CORE`
+(0 = `%`, 1 = popcount, 2 = residue) and `STAGES = L`, the number of register
+stages inside the mod-6 pipeline (the testbenches call it `LATENCY`).
 
 - The CA free-runs exactly as before.
 - The mod-6 pipeline is fed from the CA state every clock, unconditionally.
@@ -139,4 +143,4 @@ Implementations: `electronic-die/rtl/verilog/electronic_die_fast.v` (CORE 0
 = `%` plus output registers, 1 = `mod6_popcount`, 2 = `mod6_residue`) and
 `electronic-die/rtl/vhdl/electronic_die_fast.vhd` (CORE 0 and 2, VHDL-93 so
 that Quartus II 9.0 can read it). `tb_die_check` runs this contract for
-every core and stage count used in `docs/results.md`, for all four seeds.
+every core and stage count used in `docs/results.md`, for all six seeds.

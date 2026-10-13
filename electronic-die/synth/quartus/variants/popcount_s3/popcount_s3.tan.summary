@@ -36,7 +36,7 @@ Type           : Clock Setup: 'clk'
 Slack          : N/A
 Required Time  : None
 Actual Time    : 115.22 MHz ( period = 8.679 ns )
-From           : mod6_popcount:popcount.mod_inst|level[0].n[0].registered.oq[3]
+From           : mod6_popcount:popcount.mod_inst|trees.level[0].n[0].registered.oq[3]
 To             : result_reg[2]
 From Clock     : clk
 To Clock       : clk
