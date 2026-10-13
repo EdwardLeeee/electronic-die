@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
-// Self-checking testbench for the electronic die (original timing).
+// Self-checking testbench for the electronic die.
 //   default     : electronic_die (structural)
 //   -DBEHAVIORAL: electronic_die_behavior
-// Contract: docs/verification.md, section 2:
-//   R[0] = R[1] = 1;  R[k] = en_k ? die(state[k-2]) : R[k-1]  for k >= 2
+//   -DFAST      : electronic_die_fast, -Ptb_die_check.CORE=<0|1|2> -Ptb_die_check.LATENCY=<stages>
+// Contract: docs/verification.md, sections 2 and 4 (L = LATENCY, 0 for the originals):
+//   R[k] = 1 for k <= 1+L;  R[k] = en_k ? die(state[k-2-L]) : R[k-1]  for k >= 2+L
 // where k counts rising edges and en_k is the value of en sampled at edge k.
 //   -Ptb_die_check.SEED=64'd<seed>   must match the seed used for the vectors
 //   +states=<file> +die=<file>       from model/ca_rng.py vectors
@@ -11,12 +12,16 @@
 module tb_die_check;
     parameter [63:0]  SEED      = 64'd122059;
     parameter integer MAX_STEPS = 8192;
+    parameter integer CORE      = 2;
+    parameter integer LATENCY   = 0;
 
     reg        clk = 1'b0;
     reg        en  = 1'b1;          // high from time 0: edge 1 must not update
     wire [2:0] tossing_result;
 
-`ifdef BEHAVIORAL
+`ifdef FAST
+    electronic_die_fast #(.SEED(SEED), .CORE(CORE), .STAGES(LATENCY)) dut (.clk(clk), .en(en), .tossing_result(tossing_result));
+`elsif BEHAVIORAL
     electronic_die_behavior #(.SEED(SEED)) dut (.clk(clk), .en(en), .tossing_result(tossing_result));
 `else
     electronic_die          #(.SEED(SEED)) dut (.clk(clk), .en(en), .tossing_result(tossing_result));
@@ -57,6 +62,9 @@ module tb_die_check;
         for (k = 0; k <= MAX_STEPS; k = k + 1) begin states[k] = {64{1'bx}}; die[k] = 3'bxxx; end
         $readmemb(states_file, states, 0, steps);
         $readmemb(die_file, die, 0, steps);
+`ifndef FAST
+        if (LATENCY != 0) $fatal(1, "LATENCY must be 0 for the original designs");
+`endif
         if (states[0] !== SEED)
             $fatal(1, "vector seed %0d does not match parameter SEED=%0d", states[0], SEED);
         if (^states[steps] === 1'bx || ^die[steps] === 1'bx)
@@ -69,7 +77,7 @@ module tb_die_check;
 
         for (k = 1; k <= steps; k = k + 1) begin
             @(negedge clk);                         // edge k has happened
-            if (k >= 2 && en) R = die[k-2];         // en was sampled at edge k
+            if (k >= 2 + LATENCY && en) R = die[k-2-LATENCY];   // en was sampled at edge k
             if (tossing_result !== R) begin
                 errors = errors + 1;
                 $display("FAIL edge %0d (en=%b): tossing_result=%0d expected=%0d", k, en, tossing_result, R);
@@ -86,8 +94,13 @@ module tb_die_check;
             en = en_for_edge(k + 1);
         end
         if (errors) $fatal(1, "FAIL: %0d mismatches", errors);
+`ifdef FAST
+        $display("PASS: electronic_die_fast CORE=%0d STAGES=%0d, seed=%0d, %0d edges match the contract",
+                 CORE, LATENCY, SEED, steps);
+`else
         $display("PASS: electronic_die %0s, seed=%0d, %0d edges match the contract",
                  `ifdef BEHAVIORAL "behavioral" `else "structural" `endif, SEED, steps);
+`endif
         $finish;
     end
 endmodule

@@ -4,7 +4,8 @@
 #   make test EDA_HOME=~/.local/opt/eda
 #                                   tools unpacked from .deb files with dpkg -x
 #                                   (no root needed); see README.
-#   make test-verilog / test-vhdl / test-ram / test-model  run one group
+#   make test-verilog / test-vhdl / test-ram / test-model / test-m3  run one group
+#   make test-m3 EQ_N=200000        longer random equivalence run for the mod-6 cores
 #
 # Every test exits non-zero on the first mismatch, so a red run is a red run.
 
@@ -42,18 +43,21 @@ RAM_SIM := ram-controller/sim
 V_STRUCT := $(DIE_RTL)/verilog/ca_cell.v $(DIE_RTL)/verilog/rng64.v \
             $(DIE_RTL)/verilog/modulo_by_6.v $(DIE_RTL)/verilog/electronic_die.v
 V_BEHAV  := $(DIE_RTL)/verilog-behavioral/electronic_die_behavior.v
+V_CORES  := $(DIE_RTL)/verilog/mod6_popcount.v $(DIE_RTL)/verilog/mod6_residue.v
+V_FAST   := $(DIE_RTL)/verilog/ca_cell.v $(DIE_RTL)/verilog/rng64.v \
+            $(DIE_RTL)/verilog/modulo_by_6.v $(V_CORES) $(DIE_RTL)/verilog/electronic_die_fast.v
 H_STRUCT := $(DIE_RTL)/vhdl/ca_cell.vhd $(DIE_RTL)/vhdl/rng64.vhd \
             $(DIE_RTL)/vhdl/modulo_by_6.vhd $(DIE_RTL)/vhdl/electronic_die.vhd
 H_BEHAV  := $(DIE_RTL)/vhdl-behavioral/electronic_die_behavior.vhd
 
 VECFILES := $(foreach s,$(SEEDS),$(VEC)/$(s).states $(VEC)/$(s).die)
 
-.PHONY: all test test-model vectors test-verilog test-vhdl test-ram clean
+.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast clean
 .DELETE_ON_ERROR:
 
 all: test
 
-test: test-model test-verilog test-vhdl test-ram
+test: test-model test-verilog test-vhdl test-ram test-m3
 	@echo "ALL TESTS PASSED"
 
 # --- reference model against the committed ModelSim outputs -----------------
@@ -86,6 +90,36 @@ test-verilog: $(VECFILES) $(BUILD)/tb_rng64_structural.vvp $(BUILD)/tb_rng64_beh
 	    $(IVERILOG) $(IVFLAGS) $$def "-Ptb_die_check.SEED=64'd$$s" \
 	        -o $(BUILD)/tb_die_$${v}_$$s.vvp $(DIE_SIM)/tb_die_check.v $$src || exit 1; \
 	    $(VVP) -N $(BUILD)/tb_die_$${v}_$$s.vvp +states=$(VEC)/$$s.states +die=$(VEC)/$$s.die +steps=$(STEPS) || exit 1; \
+	  done; \
+	done
+
+# --- M3: mod-6 cores and the pipelined die (Verilog) -------------------------
+# Equivalence with %: "core width max_stages"; WIDTH 16 is exhaustive.
+EQ_N       ?= 20000
+EQ_CONFIGS := "1 16 4" "1 64 6" "2 16 3" "2 64 5"
+# Die-level contract: "core stages"
+FAST_CONFIGS ?= "0 0" "0 1" "0 2" "1 0" "1 1" "1 2" "1 3" "2 0" "2 1" "2 2" "2 3"
+
+test-m3: test-equiv test-fast
+
+test-equiv: $(DIE_SIM)/tb_mod6_equiv.v $(V_CORES)
+	@mkdir -p $(BUILD)/m3
+	@for cfg in $(EQ_CONFIGS); do set -- $$cfg; \
+	  for st in $$(seq 0 $$3); do \
+	    $(IVERILOG) $(IVFLAGS) -Ptb_mod6_equiv.CORE=$$1 -Ptb_mod6_equiv.WIDTH=$$2 -Ptb_mod6_equiv.STAGES=$$st \
+	        -o $(BUILD)/m3/eq_$$1_$$2_$$st.vvp $^ || exit 1; \
+	    $(VVP) -N $(BUILD)/m3/eq_$$1_$$2_$$st.vvp +n=$(EQ_N) || exit 1; \
+	  done; \
+	done
+
+test-fast: $(VECFILES) $(DIE_SIM)/tb_die_check.v $(V_FAST)
+	@mkdir -p $(BUILD)/m3
+	@for cfg in $(FAST_CONFIGS); do set -- $$cfg; \
+	  for s in $(SEEDS); do \
+	    echo "== verilog electronic_die_fast CORE=$$1 STAGES=$$2 seed=$$s"; \
+	    $(IVERILOG) $(IVFLAGS) -DFAST "-Ptb_die_check.SEED=64'd$$s" -Ptb_die_check.CORE=$$1 -Ptb_die_check.LATENCY=$$2 \
+	        -o $(BUILD)/m3/die_$$1_$$2_$$s.vvp $(DIE_SIM)/tb_die_check.v $(V_FAST) || exit 1; \
+	    $(VVP) -N $(BUILD)/m3/die_$$1_$$2_$$s.vvp +states=$(VEC)/$$s.states +die=$(VEC)/$$s.die +steps=$(STEPS) || exit 1; \
 	  done; \
 	done
 

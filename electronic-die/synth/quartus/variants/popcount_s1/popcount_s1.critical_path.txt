@@ -1,0 +1,48 @@
+Info: Clock "clk" has Internal fmax of 87.72 MHz between source register "mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]" and destination register "result_reg[2]" (period= 11.4 ns)
+    Info: + Longest register to register delay is 11.217 ns
+        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]'
+        Info: 2: + IC(0.758 ns) + CELL(0.371 ns) = 1.129 ns; Loc. = LCCOMB_X33_Y17_N16; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add3~1'
+        Info: 3: + IC(0.292 ns) + CELL(0.263 ns) = 1.684 ns; Loc. = LCCOMB_X33_Y17_N0; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|level[0].n[0].esum[0]~3'
+        Info: 4: + IC(0.000 ns) + CELL(0.312 ns) = 1.996 ns; Loc. = LCCOMB_X33_Y17_N2; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|level[0].n[0].esum[1]~1'
+        Info: 5: + IC(0.724 ns) + CELL(0.350 ns) = 3.070 ns; Loc. = LCCOMB_X34_Y18_N18; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~6'
+        Info: 6: + IC(0.000 ns) + CELL(0.035 ns) = 3.105 ns; Loc. = LCCOMB_X34_Y18_N20; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~10'
+        Info: 7: + IC(0.000 ns) + CELL(0.035 ns) = 3.140 ns; Loc. = LCCOMB_X34_Y18_N22; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~14'
+        Info: 8: + IC(0.000 ns) + CELL(0.035 ns) = 3.175 ns; Loc. = LCCOMB_X34_Y18_N24; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~18'
+        Info: 9: + IC(0.000 ns) + CELL(0.035 ns) = 3.210 ns; Loc. = LCCOMB_X34_Y18_N26; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~22'
+        Info: 10: + IC(0.000 ns) + CELL(0.125 ns) = 3.335 ns; Loc. = LCCOMB_X34_Y18_N28; Fanout = 3; COMB Node = 'mod6_popcount:popcount.mod_inst|Add62~25'
+        Info: 11: + IC(0.270 ns) + CELL(0.350 ns) = 3.955 ns; Loc. = LCCOMB_X34_Y18_N2; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_2~6'
+        Info: 12: + IC(0.000 ns) + CELL(0.125 ns) = 4.080 ns; Loc. = LCCOMB_X34_Y18_N4; Fanout = 5; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_2~9'
+        Info: 13: + IC(0.385 ns) + CELL(0.516 ns) = 4.981 ns; Loc. = LCCOMB_X33_Y18_N4; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_3~10'
+        Info: 14: + IC(0.000 ns) + CELL(0.125 ns) = 5.106 ns; Loc. = LCCOMB_X33_Y18_N6; Fanout = 5; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_3~13'
+        Info: 15: + IC(0.384 ns) + CELL(0.436 ns) = 5.926 ns; Loc. = LCCOMB_X33_Y18_N18; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_4~6'
+        Info: 16: + IC(0.000 ns) + CELL(0.035 ns) = 5.961 ns; Loc. = LCCOMB_X33_Y18_N20; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_4~10'
+        Info: 17: + IC(0.000 ns) + CELL(0.125 ns) = 6.086 ns; Loc. = LCCOMB_X33_Y18_N22; Fanout = 5; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_4~13'
+        Info: 18: + IC(0.644 ns) + CELL(0.516 ns) = 7.246 ns; Loc. = LCCOMB_X34_Y17_N20; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_5~10'
+        Info: 19: + IC(0.000 ns) + CELL(0.125 ns) = 7.371 ns; Loc. = LCCOMB_X34_Y17_N22; Fanout = 5; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_5~13'
+        Info: 20: + IC(0.385 ns) + CELL(0.436 ns) = 8.192 ns; Loc. = LCCOMB_X34_Y17_N4; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_6~10'
+        Info: 21: + IC(0.000 ns) + CELL(0.125 ns) = 8.317 ns; Loc. = LCCOMB_X34_Y17_N6; Fanout = 5; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_6~13'
+        Info: 22: + IC(0.397 ns) + CELL(0.545 ns) = 9.259 ns; Loc. = LCCOMB_X35_Y17_N2; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_7~6'
+        Info: 23: + IC(0.000 ns) + CELL(0.035 ns) = 9.294 ns; Loc. = LCCOMB_X35_Y17_N4; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_7~10'
+        Info: 24: + IC(0.000 ns) + CELL(0.125 ns) = 9.419 ns; Loc. = LCCOMB_X35_Y17_N6; Fanout = 4; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_7~13'
+        Info: 25: + IC(0.385 ns) + CELL(0.436 ns) = 10.240 ns; Loc. = LCCOMB_X35_Y17_N18; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_8~6'
+        Info: 26: + IC(0.000 ns) + CELL(0.035 ns) = 10.275 ns; Loc. = LCCOMB_X35_Y17_N20; Fanout = 1; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_8~10'
+        Info: 27: + IC(0.000 ns) + CELL(0.125 ns) = 10.400 ns; Loc. = LCCOMB_X35_Y17_N22; Fanout = 2; COMB Node = 'mod6_popcount:popcount.mod_inst|lpm_divide:Mod0|lpm_divide_46m:auto_generated|sign_div_unsign_9kh:divider|alt_u_div_m0f:divider|op_8~13'
+        Info: 28: + IC(0.609 ns) + CELL(0.053 ns) = 11.062 ns; Loc. = LCCOMB_X35_Y18_N12; Fanout = 1; COMB Node = 'Add0~1'
+        Info: 29: + IC(0.000 ns) + CELL(0.155 ns) = 11.217 ns; Loc. = LCFF_X35_Y18_N13; Fanout = 1; REG Node = 'result_reg[2]'
+        Info: Total cell delay = 5.984 ns ( 53.35 % )
+        Info: Total interconnect delay = 5.233 ns ( 46.65 % )
+    Info: - Smallest clock skew is 0.001 ns
+        Info: + Shortest clock path from clock "clk" to destination register is 2.477 ns
+            Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
+            Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 102; COMB Node = 'clk~clkctrl'
+            Info: 3: + IC(0.662 ns) + CELL(0.618 ns) = 2.477 ns; Loc. = LCFF_X35_Y18_N13; Fanout = 1; REG Node = 'result_reg[2]'
+            Info: Total cell delay = 1.472 ns ( 59.43 % )
+            Info: Total interconnect delay = 1.005 ns ( 40.57 % )
+        Info: - Longest clock path from clock "clk" to source register is 2.476 ns
+            Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
+            Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 102; COMB Node = 'clk~clkctrl'
+            Info: 3: + IC(0.661 ns) + CELL(0.618 ns) = 2.476 ns; Loc. = LCFF_X31_Y16_N17; Fanout = 2; REG Node = 'mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]'
+            Info: Total cell delay = 1.472 ns ( 59.45 % )
+            Info: Total interconnect delay = 1.004 ns ( 40.55 % )
+    Info: + Micro clock to output delay of source is 0.094 ns
+    Info: + Micro setup delay of destination is 0.090 ns

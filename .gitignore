@@ -37,3 +37,4 @@ work-obj*/
 **/synth/quartus/**/*.asm.rpt
 **/synth/quartus/**/*.ipregen.rpt
 local.mk
+*.compile.log
