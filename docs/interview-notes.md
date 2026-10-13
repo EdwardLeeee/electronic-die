@@ -137,8 +137,10 @@ sensible stopping point on this device; a third stage only adds registers.
   (a wrong table entry, `en` ignored, `% 7`, an update on the seed-loading
   edge, an extra cycle of latency, a wrong mod-3 node, a dropped digit, a
   misaligned `b0`, a valid bit one cycle early) all fail.
-- Seeds 0 and all-ones are tested on purpose: the table maps 0000 to 0 and
-  1111 to 1, so both are fixed points (the die shows 1 or 4 forever).
+- The four fixed points are tested on purpose: all zeros and all ones (the
+  table maps 0000 to 0 and 1111 to 1) and the two alternating patterns
+  0x5555... and 0xAAAA... (every cell sees 0101 or 1010, which map back to
+  its own value). The die then shows 1, 4, 6 or 5 forever.
 
 ## 7. Limits to state honestly
 

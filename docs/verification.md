@@ -26,9 +26,12 @@ hardware is replaced (M3). The testbenches apply the `en` protocol themselves.
 - `S.die`: N+1 lines, line k is `(state[k] mod 6) + 1` as 3 binary digits.
 
 Seeds used by `make test`: 122059 (the course run), 0xDEADBEEFCAFEF00D,
-0 and 0xFFFFFFFFFFFFFFFF. The last two are fixed points of the CA (LUT maps
-0000 to 0 and 1111 to 1), so their vectors are constant; the testbench checks
-them like any other seed, which documents the weakness instead of hiding it.
+and the four fixed points of the CA: 0, 0xFFFFFFFFFFFFFFFF, 0x5555555555555555
+and 0xAAAAAAAAAAAAAAAA. The table maps 0000 to 0 and 1111 to 1, and for the
+alternating patterns every cell sees 0101 or 1010, which map to 0 and 1, its
+own value. Their vectors are constant; the testbenches check them like any
+other seed, which documents the weakness instead of hiding it
+(docs/rng_analysis.md shows there are no other fixed points).
 
 ## 1. RNG: `rng64` (structural) and `rng64_behavior`
 

@@ -31,8 +31,9 @@ GHDLFLAGS ?= --std=08
 BUILD := build
 VEC   := $(BUILD)/vec
 STEPS ?= 512
-# course seed, an arbitrary dense seed, and the two fixed points of the CA
-SEEDS ?= 122059 16045690984503111693 0 18446744073709551615
+# course seed, an arbitrary dense seed, and the four fixed points of the CA
+# (all zeros, all ones, 0x5555..., 0xAAAA...)
+SEEDS ?= 122059 16045690984503111693 0 18446744073709551615 6148914691236517205 12297829382473034410
 
 MODEL   := model/ca_rng.py
 DIE_RTL := electronic-die/rtl

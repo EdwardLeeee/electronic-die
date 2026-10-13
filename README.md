@@ -114,5 +114,6 @@ QUARTUS_BIN=<directory with quartus_sh> tools/run_quartus.sh   # Linux runs it t
   same settings as the course run, on one device.
 - The CA is a teaching example of a hardware RNG, not a certified or
   cryptographic generator. `docs/rng_analysis.md` lists what was measured
-  and its known weaknesses, starting with the two fixed points (all zeros
-  and all ones).
+  and its known weaknesses: four fixed points, a bias toward even faces,
+  and the course seed itself falling into a 128-state cycle after
+  305,754 clocks.
