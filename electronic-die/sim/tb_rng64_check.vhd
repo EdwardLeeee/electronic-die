@@ -35,10 +35,10 @@ begin
     end process;
 
     g_dut : if DUT = "structural" generate
-        dut : entity work.rng64(structure)
+        uut : entity work.rng64(structure)
             port map (seed => seed, clk => clk, sel => sel, rng_out => rng_out);
     else generate
-        dut : entity work.rng64_behavior(behavior)
+        uut : entity work.rng64_behavior(behavior)
             port map (clk => clk, sel => sel, seed => seed, rng_out => rng_out);
     end generate;
 

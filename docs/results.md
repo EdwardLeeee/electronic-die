@@ -7,29 +7,40 @@ All rows: Stratix II EP2S15F484C3 (fastest speed grade), default settings, no ti
 constraints, Classic Timing Analyzer. These are post-fit synthesis estimates; nothing
 was run on a board.
 
-| Variant | Mod-6 stage | Stages | ALUTs | Registers | fmax (MHz) | Speed-up | Reg-to-reg path (ns) | Critical path |
-|---|---|---:|---:|---:|---:|---:|---:|---|
-| course (June 2026, Windows) | as submitted for the course, Quartus on Windows | 0 | 684 | 68 | 10.96 | 1.0x |  | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
-| baseline | original structural design (course submission), device pinned | 0 | 684 | 68 | 10.96 | 1.0x | 91.256 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
-| percent_s0 | new top, original % operator, no pipeline (wrapper sanity check) | 0 | 684 | 68 | 10.96 | 1.0x | 91.256 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
-| percent_s1 | original % operator plus one output register (naive registered) | 1 | 686 | 72 | 11.30 | 1.0x | 88.505 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `percent.delay[1].q[2]` |
-| popcount_s0 | two popcount trees then mod 3, 0 pipeline stage(s) | 0 | 202 | 72 (68+4 dup.) | 75.95 | 6.9x | 13.166 | `rng64:rng_inst|ca_cell:ca_generate[33].ca_array|y` to `result_reg[1]` |
-| popcount_s1 | two popcount trees then mod 3, 1 pipeline stage(s) | 1 | 206 | 102 | 87.72 | 8.0x | 11.400 | `mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]` to `result_reg[2]` |
-| popcount_s2 | two popcount trees then mod 3, 2 pipeline stage(s) | 2 | 202 | 139 | 103.01 | 9.4x | 9.708 | `mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]` to `result_reg[2]` |
-| popcount_s3 | two popcount trees then mod 3, 3 pipeline stage(s) | 3 | 214 | 165 | 115.22 | 10.5x | 8.679 | `mod6_popcount:popcount.mod_inst|level[0].n[0].registered.oq[3]` to `result_reg[2]` |
-| residue_s0 | mod-3 adder tree over base-4 digits, 0 pipeline stage(s) | 0 | 110 | 69 (68+1 dup.) | 270.86 | 24.7x | 3.692 | `rng64:rng_inst|ca_cell:ca_generate[58].ca_array|y` to `result_reg[2]` |
-| residue_s1 | mod-3 adder tree over base-4 digits, 1 pipeline stage(s) | 1 | 113 | 78 | 468.38 | 42.7x | 2.135 | `rng64:rng_inst|ca_cell:ca_generate[2].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[2].n[0].registered.q[0]` |
-| residue_s2 | mod-3 adder tree over base-4 digits, 2 pipeline stage(s) | 2 | 108 | 92 | 500.00 (cap) | 45.6x (cap) | 1.829 | `rng64:rng_inst|ca_cell:ca_generate[35].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[3].n[4].registered.q[1]` |
-| residue_s3 | mod-3 adder tree over base-4 digits, 3 pipeline stage(s) | 3 | 112 | 102 | 500.00 (cap) | 45.6x (cap) | 1.863 | `rng64:rng_inst|ca_cell:ca_generate[28].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[3].n[3].registered.q[0]` |
+| Variant | Mod-6 stage | Stages | ALUTs | of which mod 6 | Registers | fmax (MHz) | Speed-up | Reg-to-reg path (ns) | Critical path |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---|
+| course Verilog (June 2026, Windows) | as submitted for the course, Quartus on Windows | 0 | 684 |  | 68 | 10.96 | 1.0x |  | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
+| course VHDL (June 2026, Windows) | as submitted for the course, Quartus on Windows | 0 | 4359 |  | 68 | 4.57 | 1.0x |  | `rng64:rng_inst|ca_cell:\ca_generate:62:ca_array|y` to `result_reg[1]` |
+| baseline | original structural design (course submission), device pinned | 0 | 684 | 618 | 68 | 10.96 | 1.0x | 91.256 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
+| percent_s0 | new top, original % operator, no pipeline (wrapper sanity check) | 0 | 684 | 618 | 68 | 10.96 | 1.0x | 91.256 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `result_reg[1]` |
+| percent_s1 | original % operator plus one output register (naive registered) | 1 | 686 | 620 | 72 | 11.30 | 1.0x | 88.505 | `rng64:rng_inst|ca_cell:ca_generate[62].ca_array|y` to `percent.delay[1].q[2]` |
+| popcount_s0 | two popcount trees then mod 3, 0 pipeline stage(s) | 0 | 202 | 130 | 72 (68+4 dup.) | 75.95 | 6.9x | 13.166 | `rng64:rng_inst|ca_cell:ca_generate[33].ca_array|y` to `result_reg[1]` |
+| popcount_s1 | two popcount trees then mod 3, 1 pipeline stage(s) | 1 | 206 | 138 | 102 | 87.72 | 8.0x | 11.400 | `mod6_popcount:popcount.mod_inst|level[2].n[1].registered.eq[0]` to `result_reg[2]` |
+| popcount_s2 | two popcount trees then mod 3, 2 pipeline stage(s) | 2 | 202 | 134 | 139 | 103.01 | 9.4x | 9.708 | `mod6_popcount:popcount.mod_inst|level[1].n[0].registered.oq[3]` to `result_reg[2]` |
+| popcount_s3 | two popcount trees then mod 3, 3 pipeline stage(s) | 3 | 214 | 146 | 165 | 115.22 | 10.5x | 8.679 | `mod6_popcount:popcount.mod_inst|level[0].n[0].registered.oq[3]` to `result_reg[2]` |
+| residue_s0 | mod-3 adder tree over base-4 digits, 0 pipeline stage(s) | 0 | 110 | 41 | 69 (68+1 dup.) | 270.86 | 24.7x | 3.692 | `rng64:rng_inst|ca_cell:ca_generate[58].ca_array|y` to `result_reg[2]` |
+| residue_s1 | mod-3 adder tree over base-4 digits, 1 pipeline stage(s) | 1 | 113 | 45 | 78 | 468.38 | 42.7x | 2.135 | `rng64:rng_inst|ca_cell:ca_generate[2].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[2].n[0].registered.q[0]` |
+| residue_s2 | mod-3 adder tree over base-4 digits, 2 pipeline stage(s) | 2 | 108 | 40 | 92 | 500.00 (cap) | 45.6x (cap) | 1.829 | `rng64:rng_inst|ca_cell:ca_generate[35].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[3].n[4].registered.q[1]` |
+| residue_s3 | mod-3 adder tree over base-4 digits, 3 pipeline stage(s) | 3 | 112 | 44 | 102 | 500.00 (cap) | 45.6x (cap) | 1.863 | `rng64:rng_inst|ca_cell:ca_generate[28].ca_array|y` to `mod6_residue:residue.mod_inst|tree.level[3].n[3].registered.q[0]` |
+| vhdl_baseline | VHDL: original structural design (VHDL mod operator) | 0 | 4359 | 4293 | 68 | 4.57 | 1.0x | 218.626 | `rng64:rng_inst|ca_cell:\ca_generate:62:ca_array|y` to `result_reg[1]` |
+| vhdl_residue_s0 | VHDL: mod-3 adder tree, 0 pipeline stage(s) | 0 | 109 | 41 | 68 | 269.47 | 59.0x | 3.711 | `rng64:rng_inst|ca_cell:\ca_generate:40:ca_array|y` to `result_reg[2]` |
+| vhdl_residue_s1 | VHDL: mod-3 adder tree, 1 pipeline stage(s) | 1 | 114 | 46 | 78 | 427.17 | 93.5x | 2.341 | `rng64:rng_inst|ca_cell:\ca_generate:46:ca_array|y` to `mod6_residue:\g_residue:mod_inst|node[6][0]` |
+| vhdl_residue_s2 | VHDL: mod-3 adder tree, 2 pipeline stage(s) | 2 | 109 | 40 | 93 (92+1 dup.) | 493.34 | 108.0x | 2.027 | `rng64:rng_inst|ca_cell:\ca_generate:29:ca_array|y` to `mod6_residue:\g_residue:mod_inst|node[11][0]` |
 
-- **Speed-up** is relative to the `baseline` row (the course design recompiled with the
-  device pinned; its summaries are identical to the June course run in the first row).
+- **Speed-up** is relative to the course design in the same language, recompiled with
+  the device pinned (`baseline` for Verilog, `vhdl_baseline` for VHDL). Both recompiles
+  reproduce the June course runs in the first two rows exactly. The VHDL course design
+  divides by a 64-bit constant (`mod to_unsigned(6, 64)`), which Quartus builds as a
+  full 64-by-64 divider, hence its 4,359 ALUTs.
 - **(cap)**: the Classic Timing Analyzer reports "fmax restricted to clock pin edge rate 2.0 ns":
   500 MHz is the limit of the clock input pin, not of a logic path. The
   register-to-register column shows how much of the 2.000 ns period the slowest path
   actually needs.
 - **Reg-to-reg path** = longest register-to-register delay + micro tco + micro tsu - clock
   skew, from `<variant>.critical_path.txt` (an excerpt of the timing report kept in git).
+- **of which mod 6**: ALUTs of the `modulo_by_6`, `mod6_popcount` or `mod6_residue`
+  instance in the fitter's per-entity table (`<variant>.entities.txt`); the CA itself
+  is about 64 more.
 - **dup.**: the fitter duplicated a register for routability (named `~DUPLICATE` in the
   fitter report); the synthesis (map) count is shown first.
 - Pipelined variants answer `STAGES` clocks later; `en` keeps its meaning (it gates the

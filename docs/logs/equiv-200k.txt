@@ -1,0 +1,23 @@
+# make test-equiv EQ_N=200000   (2026-10-14, Icarus Verilog 12.0)
+PASS: mod6_popcount WIDTH=16 STAGES=0: 65536 values (every input) equal x % 6
+PASS: mod6_popcount WIDTH=16 STAGES=1: 65536 values (every input) equal x % 6
+PASS: mod6_popcount WIDTH=16 STAGES=2: 65536 values (every input) equal x % 6
+PASS: mod6_popcount WIDTH=16 STAGES=3: 65536 values (every input) equal x % 6
+PASS: mod6_popcount WIDTH=16 STAGES=4: 65536 values (every input) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=0: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=1: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=2: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=3: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=4: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=5: 200264 values (directed + random) equal x % 6
+PASS: mod6_popcount WIDTH=64 STAGES=6: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=16 STAGES=0: 65536 values (every input) equal x % 6
+PASS: mod6_residue WIDTH=16 STAGES=1: 65536 values (every input) equal x % 6
+PASS: mod6_residue WIDTH=16 STAGES=2: 65536 values (every input) equal x % 6
+PASS: mod6_residue WIDTH=16 STAGES=3: 65536 values (every input) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=0: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=1: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=2: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=3: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=4: 200264 values (directed + random) equal x % 6
+PASS: mod6_residue WIDTH=64 STAGES=5: 200264 values (directed + random) equal x % 6

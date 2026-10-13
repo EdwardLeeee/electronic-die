@@ -1,0 +1,24 @@
+Info: Clock "clk" has Internal fmax of 427.17 MHz between source register "rng64:rng_inst|ca_cell:\ca_generate:46:ca_array|y" and destination register "mod6_residue:\g_residue:mod_inst|node[6][0]" (period= 2.341 ns)
+    Info: + Longest register to register delay is 2.162 ns
+        Info: 1: + IC(0.000 ns) + CELL(0.000 ns) = 0.000 ns; Loc. = LCFF_X23_Y19_N17; Fanout = 6; REG Node = 'rng64:rng_inst|ca_cell:\ca_generate:46:ca_array|y'
+        Info: 2: + IC(0.655 ns) + CELL(0.346 ns) = 1.001 ns; Loc. = LCCOMB_X23_Y21_N10; Fanout = 2; COMB Node = 'mod6_residue:\g_residue:mod_inst|Mux52~0'
+        Info: 3: + IC(0.315 ns) + CELL(0.154 ns) = 1.470 ns; Loc. = LCCOMB_X23_Y21_N20; Fanout = 2; COMB Node = 'mod6_residue:\g_residue:mod_inst|Mux24~0'
+        Info: 4: + IC(0.312 ns) + CELL(0.225 ns) = 2.007 ns; Loc. = LCCOMB_X23_Y21_N8; Fanout = 1; COMB Node = 'mod6_residue:\g_residue:mod_inst|Mux11~0'
+        Info: 5: + IC(0.000 ns) + CELL(0.155 ns) = 2.162 ns; Loc. = LCFF_X23_Y21_N9; Fanout = 2; REG Node = 'mod6_residue:\g_residue:mod_inst|node[6][0]'
+        Info: Total cell delay = 0.880 ns ( 40.70 % )
+        Info: Total interconnect delay = 1.282 ns ( 59.30 % )
+    Info: - Smallest clock skew is 0.005 ns
+        Info: + Shortest clock path from clock "clk" to destination register is 2.480 ns
+            Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
+            Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 78; COMB Node = 'clk~clkctrl'
+            Info: 3: + IC(0.665 ns) + CELL(0.618 ns) = 2.480 ns; Loc. = LCFF_X23_Y21_N9; Fanout = 2; REG Node = 'mod6_residue:\g_residue:mod_inst|node[6][0]'
+            Info: Total cell delay = 1.472 ns ( 59.35 % )
+            Info: Total interconnect delay = 1.008 ns ( 40.65 % )
+        Info: - Longest clock path from clock "clk" to source register is 2.475 ns
+            Info: 1: + IC(0.000 ns) + CELL(0.854 ns) = 0.854 ns; Loc. = PIN_N20; Fanout = 1; CLK Node = 'clk'
+            Info: 2: + IC(0.343 ns) + CELL(0.000 ns) = 1.197 ns; Loc. = CLKCTRL_G3; Fanout = 78; COMB Node = 'clk~clkctrl'
+            Info: 3: + IC(0.660 ns) + CELL(0.618 ns) = 2.475 ns; Loc. = LCFF_X23_Y19_N17; Fanout = 6; REG Node = 'rng64:rng_inst|ca_cell:\ca_generate:46:ca_array|y'
+            Info: Total cell delay = 1.472 ns ( 59.47 % )
+            Info: Total interconnect delay = 1.003 ns ( 40.53 % )
+    Info: + Micro clock to output delay of source is 0.094 ns
+    Info: + Micro setup delay of destination is 0.090 ns

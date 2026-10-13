@@ -49,10 +49,11 @@ V_FAST   := $(DIE_RTL)/verilog/ca_cell.v $(DIE_RTL)/verilog/rng64.v \
 H_STRUCT := $(DIE_RTL)/vhdl/ca_cell.vhd $(DIE_RTL)/vhdl/rng64.vhd \
             $(DIE_RTL)/vhdl/modulo_by_6.vhd $(DIE_RTL)/vhdl/electronic_die.vhd
 H_BEHAV  := $(DIE_RTL)/vhdl-behavioral/electronic_die_behavior.vhd
+H_FAST   := $(DIE_RTL)/vhdl/mod6_residue.vhd $(DIE_RTL)/vhdl/electronic_die_fast.vhd
 
 VECFILES := $(foreach s,$(SEEDS),$(VEC)/$(s).states $(VEC)/$(s).die)
 
-.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast clean
+.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl clean
 .DELETE_ON_ERROR:
 
 all: test
@@ -100,7 +101,7 @@ EQ_CONFIGS := "1 16 4" "1 64 6" "2 16 3" "2 64 5"
 # Die-level contract: "core stages"
 FAST_CONFIGS ?= "0 0" "0 1" "0 2" "1 0" "1 1" "1 2" "1 3" "2 0" "2 1" "2 2" "2 3"
 
-test-m3: test-equiv test-fast
+test-m3: test-equiv test-fast test-m3-vhdl
 
 test-equiv: $(DIE_SIM)/tb_mod6_equiv.v $(V_CORES)
 	@mkdir -p $(BUILD)/m3
@@ -128,11 +129,12 @@ GHDL_WORK := $(BUILD)/ghdl
 GHDL_A    := $(GHDL) -a $(GHDLFLAGS) --workdir=$(GHDL_WORK)
 GHDL_RUN  := $(GHDL) --elab-run $(GHDLFLAGS) --workdir=$(GHDL_WORK)
 
-$(GHDL_WORK)/.analysed: $(H_STRUCT) $(H_BEHAV) $(DIE_SIM)/tb_rng64_check.vhd $(DIE_SIM)/tb_die_check.vhd
+$(GHDL_WORK)/.analysed: $(H_STRUCT) $(H_BEHAV) $(H_FAST) $(DIE_SIM)/tb_rng64_check.vhd $(DIE_SIM)/tb_die_check.vhd $(DIE_SIM)/tb_mod6_equiv.vhd
 	@mkdir -p $(GHDL_WORK)
 	$(GHDL_A) $(H_STRUCT)
 	$(GHDL_A) $(H_BEHAV)
-	$(GHDL_A) $(DIE_SIM)/tb_rng64_check.vhd $(DIE_SIM)/tb_die_check.vhd
+	$(GHDL_A) $(H_FAST)
+	$(GHDL_A) $(DIE_SIM)/tb_rng64_check.vhd $(DIE_SIM)/tb_die_check.vhd $(DIE_SIM)/tb_mod6_equiv.vhd
 	@touch $@
 
 test-vhdl: $(VECFILES) $(GHDL_WORK)/.analysed
@@ -143,6 +145,25 @@ test-vhdl: $(VECFILES) $(GHDL_WORK)/.analysed
 	    echo "== vhdl electronic_die $$v seed=$$s"; \
 	    b=$$($(PYTHON) -c "print(format($$s, '064b'))"); \
 	    $(GHDL_RUN) tb_die_check -gDUT=$$v -gSEED=$$b \
+	        -gSTATES=$(VEC)/$$s.states -gDIE=$(VEC)/$$s.die -gSTEPS=$(STEPS) || exit 1; \
+	  done; \
+	done
+
+# VHDL counterpart of test-m3 (mod6_residue and electronic_die_fast, CORE 0 and 2)
+VHDL_EQ_CONFIGS   := "16 3" "64 5"
+VHDL_FAST_CONFIGS ?= "0 0" "0 1" "2 0" "2 1" "2 2" "2 3"
+
+test-m3-vhdl: $(VECFILES) $(GHDL_WORK)/.analysed
+	@for cfg in $(VHDL_EQ_CONFIGS); do set -- $$cfg; \
+	  for st in $$(seq 0 $$2); do \
+	    $(GHDL_RUN) tb_mod6_equiv -gWIDTH=$$1 -gSTAGES=$$st -gN=$(EQ_N) || exit 1; \
+	  done; \
+	done
+	@for cfg in $(VHDL_FAST_CONFIGS); do set -- $$cfg; \
+	  for s in $(SEEDS); do \
+	    echo "== vhdl electronic_die_fast CORE=$$1 STAGES=$$2 seed=$$s"; \
+	    b=$$($(PYTHON) -c "print(format($$s, '064b'))"); \
+	    $(GHDL_RUN) tb_die_check -gDUT=fast -gCORE=$$1 -gLATENCY=$$2 -gSEED=$$b \
 	        -gSTATES=$(VEC)/$$s.states -gDIE=$(VEC)/$$s.die -gSTEPS=$(STEPS) || exit 1; \
 	  done; \
 	done

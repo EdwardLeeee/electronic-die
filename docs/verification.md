@@ -127,5 +127,13 @@ Reference sequence:
     R[k] = en_k ? die(state[k-2-L]) : R[k-1]   for k >= 2 + L
 
 With L = 0 this is contract 2. The equivalence of the new arithmetic itself
-is tested separately: `mod6_popcount` with `WIDTH = 16` exhaustively and
-with `WIDTH = 64` on random inputs against the `%` operator.
+is tested separately: `mod6_popcount` and `mod6_residue` with `WIDTH = 16`
+exhaustively and with `WIDTH = 64` on directed and random inputs against
+the `%` operator, at every legal `STAGES` (`tb_mod6_equiv.v`; the VHDL
+`mod6_residue` against `mod` in `tb_mod6_equiv.vhd`).
+
+Implementations: `electronic-die/rtl/verilog/electronic_die_fast.v` (CORE 0
+= `%` plus output registers, 1 = `mod6_popcount`, 2 = `mod6_residue`) and
+`electronic-die/rtl/vhdl/electronic_die_fast.vhd` (CORE 0 and 2, VHDL-93 so
+that Quartus II 9.0 can read it). `tb_die_check` runs this contract for
+every core and stage count used in `docs/results.md`, for all four seeds.

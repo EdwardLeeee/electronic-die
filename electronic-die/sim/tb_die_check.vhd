@@ -1,10 +1,11 @@
--- Self-checking testbench for the electronic die, original timing (VHDL-2008, GHDL).
+-- Self-checking testbench for the electronic die (VHDL-2008, GHDL).
 --   -gDUT=structural|behavioral   electronic_die(rtl) | electronic_die_behavior(behavior)
+--   -gDUT=fast -gCORE=<0|2> -gLATENCY=<stages>   electronic_die_fast(rtl)
 --   -gSEED=<64 binary digits>     must match the seed used for the vectors
 --   -gSTATES=<file> -gDIE=<file>  from model/ca_rng.py vectors
 --   -gSTEPS=<n>                   rising edges to check
--- Contract: docs/verification.md, section 2:
---   R(0) = R(1) = 1;  R(k) = die(state(k-2)) if en_k = '1' else R(k-1), k >= 2
+-- Contract: docs/verification.md, sections 2 and 4 (L = LATENCY, 0 for the originals):
+--   R(k) = 1 for k <= 1+L;  R(k) = die(state(k-2-L)) if en_k = '1' else R(k-1), k >= 2+L
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -17,7 +18,9 @@ entity tb_die_check is
         SEED   : std_logic_vector(63 downto 0) := std_logic_vector(to_unsigned(122059, 64));
         STATES : string  := "states.txt";
         DIE    : string  := "die.txt";
-        STEPS  : integer := 256
+        STEPS  : integer := 256;
+        CORE    : natural := 2;
+        LATENCY : natural := 0
     );
 end entity;
 
@@ -56,17 +59,21 @@ begin
     end process;
 
     g_dut : if DUT = "structural" generate
-        dut : entity work.electronic_die(rtl)
+        uut : entity work.electronic_die(rtl)
+            generic map (SEED => SEED)
+            port map (clk => clk, en => en, tossing_result => tossing_result);
+    elsif DUT = "behavioral" generate
+        uut : entity work.electronic_die_behavior(behavior)
             generic map (SEED => SEED)
             port map (clk => clk, en => en, tossing_result => tossing_result);
     else generate
-        dut : entity work.electronic_die_behavior(behavior)
-            generic map (SEED => SEED)
+        uut : entity work.electronic_die_fast(rtl)
+            generic map (SEED => SEED, CORE => CORE, STAGES => LATENCY)
             port map (clk => clk, en => en, tossing_result => tossing_result);
     end generate;
 
     check : process
-        alias rng_state is << signal .tb_die_check.g_dut.dut.rng_value : std_logic_vector(63 downto 0) >>;
+        alias rng_state is << signal .tb_die_check.g_dut.uut.rng_value : std_logic_vector(63 downto 0) >>;
         file     f      : text;
         variable l      : line;
         variable ok     : boolean;
@@ -95,6 +102,7 @@ begin
         end loop;
         file_close(f);
         assert state_vec(0) = SEED report "vector seed does not match generic SEED" severity failure;
+        assert DUT = "fast" or LATENCY = 0 report "LATENCY must be 0 for the original designs" severity failure;
 
         lfsr := SEED(15 downto 0) xor x"ACE1";
         if lfsr = x"0000" then lfsr := x"ACE1"; end if;
@@ -103,7 +111,7 @@ begin
 
         for k in 1 to STEPS loop
             wait until falling_edge(clk);               -- edge k has happened
-            if k >= 2 and en = '1' then r := dies(k - 2); end if;
+            if k >= 2 + LATENCY and en = '1' then r := dies(k - 2 - LATENCY); end if;
             value := to_integer(unsigned(tossing_result));
             if tossing_result /= r then
                 errors := errors + 1;
@@ -131,7 +139,12 @@ begin
             report "FAIL: " & integer'image(errors) & " mismatches" severity error;
             finish(1);
         end if;
-        report "PASS: electronic_die " & DUT & ", " & integer'image(STEPS) & " edges match the contract";
+        if DUT = "fast" then
+            report "PASS: electronic_die_fast (VHDL) CORE=" & integer'image(CORE) & " STAGES=" & integer'image(LATENCY) &
+                   ", " & integer'image(STEPS) & " edges match the contract";
+        else
+            report "PASS: electronic_die " & DUT & ", " & integer'image(STEPS) & " edges match the contract";
+        end if;
         finish(0);
     end process;
 end architecture;

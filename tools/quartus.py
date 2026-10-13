@@ -20,16 +20,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 QDIR = ROOT / "electronic-die" / "synth" / "quartus"
+QDIR_VHDL = ROOT / "electronic-die" / "synth" / "quartus-vhdl"     # course VHDL run, summaries only
 VDIR = QDIR / "variants"
-RTL = "../../../../rtl/verilog/"          # relative to a variant directory
+RTL = "../../../../rtl/"                  # relative to a variant directory
 
 DEVICE = "EP2S15F484C3"
-BASE_FILES = ["ca_cell.v", "rng64.v", "modulo_by_6.v"]
-FAST_FILES = BASE_FILES + ["mod6_popcount.v", "mod6_residue.v", "electronic_die_fast.v"]
+BASE_FILES = ["verilog/ca_cell.v", "verilog/rng64.v", "verilog/modulo_by_6.v"]
+FAST_FILES = BASE_FILES + ["verilog/mod6_popcount.v", "verilog/mod6_residue.v", "verilog/electronic_die_fast.v"]
+VHDL_BASE  = ["vhdl/ca_cell.vhd", "vhdl/rng64.vhd", "vhdl/modulo_by_6.vhd"]
+VHDL_FAST  = VHDL_BASE + ["vhdl/mod6_residue.vhd", "vhdl/electronic_die_fast.vhd"]
 
 # name: (top, files, parameters, description)
 VARIANTS: dict[str, tuple[str, list[str], dict[str, int], str]] = {
-    "baseline":   ("electronic_die", BASE_FILES + ["electronic_die.v"], {},
+    "baseline":   ("electronic_die", BASE_FILES + ["verilog/electronic_die.v"], {},
                    "original structural design (course submission), device pinned"),
     "percent_s0": ("electronic_die_fast", FAST_FILES, {"CORE": 0, "STAGES": 0},
                    "new top, original % operator, no pipeline (wrapper sanity check)"),
@@ -42,6 +45,12 @@ for s in range(4):
 for s in range(4):
     VARIANTS[f"residue_s{s}"] = ("electronic_die_fast", FAST_FILES, {"CORE": 2, "STAGES": s},
                                  f"mod-3 adder tree over base-4 digits, {s} pipeline stage(s)")
+# The same designs written in VHDL (the course submitted both languages).
+VARIANTS["vhdl_baseline"] = ("electronic_die", VHDL_BASE + ["vhdl/electronic_die.vhd"], {},
+                             "VHDL: original structural design (VHDL mod operator)")
+for s in range(3):
+    VARIANTS[f"vhdl_residue_s{s}"] = ("electronic_die_fast", VHDL_FAST, {"CORE": 2, "STAGES": s},
+                                      f"VHDL: mod-3 adder tree, {s} pipeline stage(s)")
 
 QPF = """QUARTUS_VERSION = "9.0"
 DATE = "00:00:00  January 01, 2026"
@@ -72,7 +81,8 @@ def cmd_generate() -> int:
         d = VDIR / name
         d.mkdir(parents=True, exist_ok=True)
         (d / f"{name}.qpf").write_text(QPF.format(name=name))
-        f = "".join(f"set_global_assignment -name VERILOG_FILE {RTL}{x}\n" for x in files)
+        f = "".join(f"set_global_assignment -name {'VHDL_FILE' if x.endswith('.vhd') else 'VERILOG_FILE'} {RTL}{x}\n"
+                    for x in files)
         p = "".join(f"set_parameter -name {k} {v}\n" for k, v in params.items())
         (d / f"{name}.qsf").write_text(QSF.format(desc=desc, device=DEVICE, top=top, files=f, params=p))
         for x in files:
@@ -149,6 +159,46 @@ def critical_path(d: Path, name: str) -> dict:
     }
 
 
+MOD6_ENTITIES = ("modulo_by_6:", "mod6_popcount:", "mod6_residue:")
+
+
+def entities(d: Path, name: str) -> dict:
+    """Keep the fitter's per-entity resource table as <variant>.entities.txt
+    and return the ALUTs of the mod-6 logic and of the CA."""
+    rpt, out = d / f"{name}.fit.rpt", d / f"{name}.entities.txt"
+    if rpt.exists():
+        lines = rpt.read_text(errors="replace").splitlines()
+        for i, line in enumerate(lines):
+            if line.startswith("; Fitter Resource Utilization by Entity"):
+                keep = []
+                for nxt in lines[i:]:
+                    if keep and not nxt.strip():
+                        break
+                    keep.append("+---" if nxt.startswith("+") else
+                                ";".join(c.rstrip() for c in nxt.split(";")[:5]).rstrip())
+                mrpt = d / f"{name}.map.rpt"
+                if mrpt.exists():   # divider widths Quartus inferred for a % / mod operator
+                    for m in re.finditer(r"Parameter Settings for Inferred Entity Instance: ([^\r\n;]+)"
+                                         r"(?:.*?\r?\n){1,12}?.*?LPM_WIDTHN\s*;\s*(\d+).*?\r?\n.*?LPM_WIDTHD\s*;\s*(\d+)",
+                                         mrpt.read_text(errors="replace")):
+                        keep.append(f"; inferred {m.group(1).strip()}: LPM_WIDTHN={m.group(2)} LPM_WIDTHD={m.group(3)}")
+                out.write_text("\n".join(keep) + "\n")
+                break
+    if not out.exists():
+        return {}
+    res = {}
+    for line in out.read_text().splitlines():
+        cols = [c.strip() for c in line.split(";")]
+        if len(cols) < 3 or not cols[1].startswith("|"):
+            continue
+        node, aluts = cols[1].lstrip("|").rstrip("|"), _num(cols[2])
+        if any(node.startswith(e) for e in MOD6_ENTITIES):
+            res["mod6_aluts"] = aluts
+        elif node.startswith("rng64:"):
+            res["ca_aluts"] = aluts
+    return res
+
+
 def summarize(d: Path, name: str) -> dict:
     fit, tan, mp = (d / f"{name}.{x}.summary" for x in ("fit", "tan", "map"))
     if not (fit.exists() and tan.exists()):
@@ -175,14 +225,24 @@ def summarize(d: Path, name: str) -> dict:
         "map_aluts": _num(_fields(mp).get("Combinational ALUTs", "")) if mp.exists() else None,
         "map_registers": _num(_fields(mp).get("Total registers", "")) if mp.exists() else None,
         **critical_path(d, name),
+        **entities(d, name),
     }
 
 
 def cmd_collect() -> int:
-    rows = [dict(summarize(QDIR, "electronic_die"), variant="course (June 2026, Windows)")]
+    rows = [dict(summarize(QDIR, "electronic_die"), variant="course Verilog (June 2026, Windows)",
+                 description="as submitted for the course, Quartus on Windows"),
+            dict(summarize(QDIR_VHDL, "electronic_die"), variant="course VHDL (June 2026, Windows)",
+                 description="as submitted for the course, Quartus on Windows")]
     rows += [dict(summarize(VDIR / n, n), description=VARIANTS[n][3], params=VARIANTS[n][2]) for n in VARIANTS]
-    rows[0]["description"] = "as submitted for the course, Quartus on Windows"
-    base = next((r for r in rows if r["variant"] == "baseline" and r.get("fmax_mhz")), None)
+    for r in rows:
+        r["language"] = "VHDL" if "VHDL" in r["variant"] or r["variant"].startswith("vhdl_") else "Verilog"
+    bases = {lang: next((r for r in rows if r["variant"] == name and r.get("fmax_mhz")), None)
+             for lang, name in (("Verilog", "baseline"), ("VHDL", "vhdl_baseline"))}
+    for r in rows:
+        b = bases[r["language"]]
+        r["speedup"] = round(r["fmax_mhz"] / b["fmax_mhz"], 2) if b and r.get("fmax_mhz") else None
+    base = bases["Verilog"]
     (ROOT / "docs").mkdir(exist_ok=True)
     (ROOT / "docs" / "results.json").write_text(json.dumps(rows, indent=2) + "\n")
 
@@ -196,16 +256,16 @@ def cmd_collect() -> int:
         "constraints, Classic Timing Analyzer. These are post-fit synthesis estimates; nothing",
         "was run on a board.",
         "",
-        "| Variant | Mod-6 stage | Stages | ALUTs | Registers | fmax (MHz) | Speed-up | Reg-to-reg path (ns) | Critical path |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---|",
+        "| Variant | Mod-6 stage | Stages | ALUTs | of which mod 6 | Registers | fmax (MHz) | Speed-up | Reg-to-reg path (ns) | Critical path |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---|",
     ]
     for r in rows:
         if r.get("status") == "not compiled":
-            lines.append(f"| {r['variant']} | {r.get('description', '')} | | | | not compiled | | | |")
+            lines.append(f"| {r['variant']} | {r.get('description', '')} | | | | | not compiled | | | |")
             continue
         fm = r["fmax_mhz"]
         capped = bool(r["fmax_note"])
-        sp = f"{fm / base['fmax_mhz']:.1f}x" if base and fm else ""
+        sp = f"{r['speedup']:.1f}x" if r.get("speedup") else ""
         st = r.get("params", {}).get("STAGES", 0)
         regs = f"{r['registers']:.0f}"
         if r.get("map_registers") is not None and r["map_registers"] != r["registers"]:
@@ -215,18 +275,25 @@ def cmd_collect() -> int:
             delay = f"{r['reg_to_reg_ns'] + r['micro_tco_ns'] + r['micro_tsu_ns'] - r['skew_ns']:.3f}"
         path = f"`{r['critical_from']}` to `{r['critical_to']}`"
         lines.append(
-            f"| {r['variant']} | {r.get('description', '')} | {st} | {r['aluts']:.0f} | {regs} | "
+            f"| {r['variant']} | {r.get('description', '')} | {st} | {r['aluts']:.0f} | "
+            f"{'' if r.get('mod6_aluts') is None else format(r['mod6_aluts'], '.0f')} | {regs} | "
             f"{fm:.2f}{' (cap)' if capped else ''} | {sp}{' (cap)' if capped else ''} | {delay} | {path} |")
     lines += [
         "",
-        "- **Speed-up** is relative to the `baseline` row (the course design recompiled with the",
-        "  device pinned; its summaries are identical to the June course run in the first row).",
+        "- **Speed-up** is relative to the course design in the same language, recompiled with",
+        "  the device pinned (`baseline` for Verilog, `vhdl_baseline` for VHDL). Both recompiles",
+        "  reproduce the June course runs in the first two rows exactly. The VHDL course design",
+        "  divides by a 64-bit constant (`mod to_unsigned(6, 64)`), which Quartus builds as a",
+        "  full 64-by-64 divider, hence its 4,359 ALUTs.",
         "- **(cap)**: the Classic Timing Analyzer reports \"fmax restricted to clock pin edge rate 2.0 ns\":",
         "  500 MHz is the limit of the clock input pin, not of a logic path. The",
         "  register-to-register column shows how much of the 2.000 ns period the slowest path",
         "  actually needs.",
         "- **Reg-to-reg path** = longest register-to-register delay + micro tco + micro tsu - clock",
         "  skew, from `<variant>.critical_path.txt` (an excerpt of the timing report kept in git).",
+        "- **of which mod 6**: ALUTs of the `modulo_by_6`, `mod6_popcount` or `mod6_residue`",
+        "  instance in the fitter's per-entity table (`<variant>.entities.txt`); the CA itself",
+        "  is about 64 more.",
         "- **dup.**: the fitter duplicated a register for routability (named `~DUPLICATE` in the",
         "  fitter report); the synthesis (map) count is shown first.",
         "- Pipelined variants answer `STAGES` clocks later; `en` keeps its meaning (it gates the",
@@ -234,8 +301,48 @@ def cmd_collect() -> int:
         "",
     ]
     (ROOT / "docs" / "results.md").write_text("\n".join(lines))
+    sync_readme(rows, base)
     print("\n".join(lines))
     return 0
+
+
+README_ROWS = ("baseline", "percent_s1", "popcount_s0", "popcount_s3", "residue_s0", "residue_s1", "residue_s2",
+               "vhdl_baseline", "vhdl_residue_s2")
+
+
+def sync_readme(rows: list[dict], base: dict | None) -> None:
+    """Rewrite the block between the results markers in README.md."""
+    readme = ROOT / "README.md"
+    if not readme.exists():
+        return
+    text = readme.read_text()
+    begin, end = "<!-- results:begin -->", "<!-- results:end -->"
+    if begin not in text or end not in text:
+        return
+    by = {r["variant"]: r for r in rows}
+    out = [begin,
+           "Quartus II 9.0 SP2, Stratix II EP2S15F484C3, same settings for every row. Generated",
+           "from the committed `*.summary` files by `tools/quartus.py collect`; all rows are in",
+           "[docs/results.md](docs/results.md).",
+           "",
+           "| Variant | Pipeline stages | ALUTs (total / mod 6) | Registers | fmax (MHz) | vs. course design, same language |",
+           "|---|---:|---:|---:|---:|---:|"]
+    for name in README_ROWS:
+        r = by.get(name)
+        if not r or r.get("status") == "not compiled":
+            continue
+        capped = " (clock-pin cap)" if r["fmax_note"] else ""
+        mod6 = "" if r.get("mod6_aluts") is None else f" / {r['mod6_aluts']:.0f}"
+        label = {"baseline": "course design (`%` operator)",
+                 "percent_s1": "`%` plus an output register",
+                 "vhdl_baseline": "course design, VHDL (`mod` operator)"}.get(name, f"`{name}`")
+        sp = f"{r['speedup']:.1f}x" if r.get("speedup") else ""
+        out.append(f"| {label} | {r.get('params', {}).get('STAGES', 0)} | {r['aluts']:.0f}{mod6} | "
+                   f"{r['registers']:.0f} | {r['fmax_mhz']:.2f}{capped} | {sp} |")
+    out.append(end)
+    head, rest = text.split(begin, 1)
+    _, tail = rest.split(end, 1)
+    readme.write_text(head + "\n".join(out) + tail)
 
 
 def main(argv: list[str]) -> int:
