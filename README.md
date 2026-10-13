@@ -103,6 +103,7 @@ cd -  &&  ~/.local/opt/eda/usr/bin/make test EDA_HOME=$HOME/.local/opt/eda
 | `make test-verilog`, `make test-vhdl` | RNG and die, structural and behavioural, six seeds (the course seed, a dense seed, the four CA fixed points), every clock |
 | `make test-ram` | the RAM controller: bursts, wrong ID, write priority, read latency |
 | `make test-m3` | both mod-6 cores against `%` (all 16-bit inputs, random 64-bit) and the pipelined die, Verilog and VHDL |
+| `make analysis` | regenerates `docs/rng_analysis.md` from the reference model (about 30 s; the chart is redrawn with `model/plot_rng.py`) |
 | `make test-mutants` | every mutant in `tools/mutants.py` must make its test fail (not part of `make test`; a few minutes) |
 
 The synthesis numbers come from Quartus II 9.0 SP2 Web Edition, the version
@@ -122,4 +123,4 @@ QUARTUS_BIN=<directory with quartus_sh> tools/run_quartus.sh   # Linux runs it t
   cryptographic generator. `docs/rng_analysis.md` lists what was measured
   and its known weaknesses: four fixed points, a bias toward even faces,
   and the course seed itself falling into a 128-state cycle after
-  305,754 clocks.
+  305,754 CA steps.

@@ -56,7 +56,7 @@ H_FAST   := $(DIE_RTL)/vhdl/mod6_residue.vhd $(DIE_RTL)/vhdl/electronic_die_fast
 
 VECFILES := $(foreach s,$(SEEDS),$(VEC)/$(s).states $(VEC)/$(s).die)
 
-.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl check-vhdl93 test-mutants clean
+.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl check-vhdl93 test-mutants analysis clean
 .DELETE_ON_ERROR:
 
 all: test
@@ -67,6 +67,7 @@ test: test-model test-verilog test-vhdl test-ram test-m3
 # --- reference model against the committed ModelSim outputs -----------------
 test-model:
 	$(PYTHON) -I $(MODEL) check
+	$(PYTHON) -I $(MODEL) selftest
 
 # --- expected vectors --------------------------------------------------------
 vectors: $(VECFILES)
@@ -184,6 +185,12 @@ test-ram: $(RAM_RTL)/seq_rw_ram.vhd $(RAM_SIM)/tb_seq_rw_ram.vhd
 	@mkdir -p $(GHDL_WORK_RAM)
 	$(GHDL) -a $(GHDLFLAGS) --workdir=$(GHDL_WORK_RAM) $(RAM_RTL)/seq_rw_ram.vhd $(RAM_SIM)/tb_seq_rw_ram.vhd
 	$(GHDL) --elab-run $(GHDLFLAGS) --workdir=$(GHDL_WORK_RAM) tb_seq_rw_ram
+
+# --- M2: RNG quality measurements (standard library only, about 30 s) --------
+# The chart needs matplotlib: uv run --with matplotlib python3 model/plot_rng.py \
+#     build/rng_analysis.json docs/img/die_histogram.png
+analysis:
+	$(PYTHON) -I model/rng_analysis.py --md docs/rng_analysis.md --json $(BUILD)/rng_analysis.json
 
 # --- mutation testing: tools/mutants.py copies the RTL, breaks one thing, and
 # reruns a narrowed version of the target above; the run must fail.
