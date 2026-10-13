@@ -76,7 +76,8 @@ then pseudo-random `en` for the remaining cycles.
 Ports: `clk`, `Read`, `Write`, `ID[16:0]`, `Data_Input[7:0]`,
 `Data_Output[7:0]`. Generic `ID_CODE` (default 22059). Internal signals
 `W_En`, `W_Addr`, `R_Addr` carry `attribute keep` and are observed through
-VHDL-2008 external names (`<< signal .tb.dut.W_En : std_logic >>`).
+VHDL-2008 external names (`<< signal .tb_seq_rw_ram.dut.W_En : std_logic >>`,
+declared inside the checking process).
 
 Timing, derived from the RTL. Let e0 be the rising edge at which `Write = 1`
 (or `Read = 1`) together with `ID = ID_CODE` is sampled while the FSM is in
@@ -104,8 +105,13 @@ Checks (`tb_seq_rw_ram`):
 1. Write eight distinct bytes, then read them back: `Data_Output` after
    e(k+1) of the read burst equals byte k; `W_En` is 1 exactly during the
    eight write clocks and 0 otherwise.
-2. `Write = 1` and, separately, `Read = 1` with a wrong ID: for 16 clocks
-   `W_En = 0` and `R_Addr = 000`; a later valid read returns the old data.
+2. `Write = 1`, `Read = 1`, and both together, with a wrong ID: every one
+   of the 17 ID bits is flipped in turn (17 clocks per command), and IDs that
+   differ in many bits (all zeros, all ones, the inverted code, a rotated
+   code) are tried. On every clock `W_En = 0`, `W_Addr = 000`,
+   `R_Addr = 000`, and a later valid read returns the old data. A valid
+   command on the clock right after a wrong-ID clock starts its burst at
+   once, which shows the FSM really stayed in `S_IDLE`.
 3. `Read = 1` and `Write = 1` together with the right ID and new data: a
    write burst happens (`W_En = 1` for eight clocks, later read returns the
    new data) and no read burst (`R_Addr` stays 000 during the burst).
@@ -113,6 +119,11 @@ Checks (`tb_seq_rw_ram`):
    and `mem[k]` only after e(k+1); `mem[1]` must not appear before e2. (A
    check that `mem[0]` is absent after e0 is not possible: the idle FSM
    already reloads `mem[0]` at e0, because `R_Addr = 000` in `S_IDLE`.)
+
+Limit of the method: because every check samples on the falling edge, a
+read port clocked on the falling edge instead of the rising one would look
+the same to this bench after power-up. The contract only fixes values at
+falling edges, so this is outside what it claims.
 
 ## 4. Fast die: `electronic_die_fast` (M3, new timing contract)
 
