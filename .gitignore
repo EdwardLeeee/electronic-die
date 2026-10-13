@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Simulation build products
+build/
+*.vvp
+*.vcd
+*.fst
+*.ghw
+*.cf
+work/
+work-obj*/
+*.o
+
+# Quartus build products (keep only *.summary, .qpf, .qsf)
+**/synth/quartus/**/db/
+**/synth/quartus/**/incremental_db/
+**/synth/quartus/**/*.rpt
+**/synth/quartus/**/*.sof
+**/synth/quartus/**/*.pof
+**/synth/quartus/**/*.jdi
+**/synth/quartus/**/*.pin
+**/synth/quartus/**/*.done
+**/synth/quartus/**/*.smsg
+**/synth/quartus/**/*.qws
+**/synth/quartus/**/*.qarlog
+**/synth/quartus/**/*.qdf
+**/synth/quartus/**/*.htm
+**/synth/quartus/**/*.eqn
+**/synth/quartus/**/*.sld
+**/synth/quartus/**/*.bak
+**/synth/quartus/**/*.ddb
+**/synth/quartus/**/*.qmsg
+**/synth/quartus/**/*.sta.rpt
+**/synth/quartus/**/*.asm.rpt
+**/synth/quartus/**/*.ipregen.rpt
