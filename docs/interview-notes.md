@@ -25,16 +25,16 @@ its generic divider (`lpm_divide`), which for a 64-bit dividend is a chain
 of 64 conditional-subtract steps. The critical path runs from a CA register
 through **298 logic cells** (297 in the divider, then the +1 adder) into
 `result_reg`: 91.256 ns,
-of which 53.4 ns is interconnect (`variants/baseline/baseline.critical_path.txt`).
+of which 53.4 ns is interconnect (`electronic-die/synth/quartus/variants/baseline/baseline.critical_path.txt`).
 The `%` stage costs 618 of the design's 684 ALUTs, 616 of them in the
-divider itself (`variants/baseline/baseline.entities.txt`).
+divider itself (`electronic-die/synth/quartus/variants/baseline/baseline.entities.txt`).
 
 The VHDL submission is slower still: 4,359 ALUTs and 4.57 MHz, both in
 the June course run and in the recompile here. Its `modulo_by_6.vhd` writes
 `unsigned(rng_value) mod to_unsigned(6, 64)`, and Quartus infers a divider
 with a 64-bit divisor (`LPM_WIDTHD=64`) instead of the 3-bit one it infers
-for Verilog's `% 6` (`LPM_WIDTHD=3`); see `variants/baseline/baseline.entities.txt`
-and `variants/vhdl_baseline/vhdl_baseline.entities.txt`. Same arithmetic, but
+for Verilog's `% 6` (`LPM_WIDTHD=3`); see `electronic-die/synth/quartus/variants/baseline/baseline.entities.txt`
+and `electronic-die/synth/quartus/variants/vhdl_baseline/vhdl_baseline.entities.txt`. Same arithmetic, but
 the width of a constant made the divider about seven times larger (616 to
 4,288 ALUTs).
 
@@ -87,7 +87,7 @@ random 64-bit inputs (`electronic-die/sim/tb_mod6_equiv.v`).
   130 ALUTs for the mod-6 logic, 75.95 MHz unpipelined. Even with three pipeline stages it stops
   at 115.22 MHz: the remaining `% 3` on the 8-bit count sum is again an
   `lpm_divide`, and that small divider plus the adder carry chain is the new
-  critical path (20 logic levels, `variants/popcount_s3/popcount_s3.critical_path.txt`).
+  critical path (20 logic levels, `electronic-die/synth/quartus/variants/popcount_s3/popcount_s3.critical_path.txt`).
 - **`mod6_residue`**: never forms a count. A perfect binary tree of identical
   nodes, each `(a + b) mod 3` on two 2-bit residues, which is a 4-input,
   2-output function: one lookup table per output bit. 32 digits need
