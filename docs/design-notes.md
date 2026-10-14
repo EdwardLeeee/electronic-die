@@ -1,8 +1,8 @@
-# Interview notes
+# Design notes
 
-Things to be able to explain on a whiteboard, with the numbers that back
-them. Every number here comes from a file in this repository; the file is
-named next to it.
+How the design works, why the course version is slow, and how the new
+mod-6 stage and pipeline are built and checked. Every number here comes from
+a file in this repository; the file is named next to it.
 
 ## 1. What the design is
 
@@ -148,7 +148,7 @@ sensible stopping point on this device; a third stage adds 10 registers and
   0x5555... and 0xAAAA... (every cell sees 0101 or 1010, which map back to
   its own value). The die then shows 1, 4, 6 or 5 forever.
 
-## 7. Limits to state honestly
+## 7. Limits
 
 - Started as a course assignment (NTNU, Computer-Aided Design for VLSI
   Design, spring 2026); the reference model, testbenches, analysis, new

@@ -34,7 +34,7 @@ Everything else was added afterwards:
 | RNG quality measurements | `model/rng_analysis.py`, `docs/rng_analysis.md` |
 | Division-free mod-6 cores, pipelined top level (Verilog; residue core also in VHDL) | `electronic-die/rtl/{verilog,vhdl}/mod6_*`, `electronic_die_fast.*` |
 | Quartus variant projects and the generated results table | `tools/quartus.py`, `electronic-die/synth/quartus/variants/`, `docs/results.md` |
-| Derivations and design notes | `docs/interview-notes.md` |
+| Derivations and design notes | `docs/design-notes.md` |
 
 ## How it works
 
@@ -57,7 +57,7 @@ The mod-6 stage uses `x mod 6 = b0 + 2 * ((x >> 1) mod 3)` and, because
 4 = 1 (mod 3), `(x >> 1) mod 3` is the sum of its base-4 digits mod 3: a
 five-level tree of identical 4-input nodes instead of a 64-step divider.
 The derivation, a worked example and the pipeline timing are in
-`docs/interview-notes.md`.
+`docs/design-notes.md`.
 
 ## Results
 
