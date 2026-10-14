@@ -35,7 +35,7 @@ Everything else was added afterwards:
 | Division-free mod-6 cores, pipelined top level (Verilog; residue core also in VHDL) | `electronic-die/rtl/{verilog,vhdl}/mod6_*`, `electronic_die_fast.*` |
 | Quartus variant projects and the generated results table | `tools/quartus.py`, `electronic-die/synth/quartus/variants/`, `docs/results.md` |
 | Derivations and design notes | `docs/design-notes.md` |
-| The figures in this README: a waveform bench and two drawing scripts (`make figures`) | `electronic-die/sim/tb_wave.v`, `tools/wave_png.py`, `tools/text_png.py`, `docs/img/` |
+| The figures in this README: a waveform bench and two drawing scripts (`make figures`) | `electronic-die/sim/tb_wave.v` (and `tb_wave.gtkw` for GTKWave), `tools/wave_png.py`, `tools/text_png.py`, `docs/img/` |
 
 ## How it works
 
@@ -65,7 +65,9 @@ The derivation, a worked example and the pipeline timing are in
 *Icarus Verilog run of `electronic-die/sim/tb_wave.v`, drawn from its VCD dump by
 `tools/wave_png.py`. While `en` stays high the pipelined die shows the course
 design's values two clocks later (the bench checks this at every such edge);
-in the shaded clocks `en` is low and both outputs hold.*
+in the shaded clocks `en` is low and both outputs hold. After `make figures` the
+same dump opens in GTKWave with
+`gtkwave build/wave/die_wave.vcd electronic-die/sim/tb_wave.gtkw`.*
 
 ## Results
 

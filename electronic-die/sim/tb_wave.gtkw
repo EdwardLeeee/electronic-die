@@ -1,0 +1,15 @@
+[*] GTKWave save file for the tb_wave dump (make figures writes build/wave/die_wave.vcd)
+[*]   gtkwave build/wave/die_wave.vcd electronic-die/sim/tb_wave.gtkw
+[timestart] 0
+[size] 1500 420
+[signals_width] 190
+[sst_expanded] 1
+[sst_width] 200
+@28
+tb_wave.clk
+tb_wave.en
+@24
+tb_wave.course_result[2:0]
+tb_wave.fast_result[2:0]
+[pattern_trace] 1
+[pattern_trace] 0
