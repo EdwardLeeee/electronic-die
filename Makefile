@@ -8,6 +8,8 @@
 #   make test-m3 EQ_N=200000        longer random equivalence run for the mod-6 cores
 #   make test-mutants               break the RTL on purpose (tools/mutants.py); every
 #                                   mutant must make its test fail
+#   make figures                    redraw the README figures in docs/img (needs Pillow;
+#                                   reruns make test for the log it shows)
 #
 # Every test exits non-zero when any check fails, so a red run is a red run.
 
@@ -56,7 +58,7 @@ H_FAST   := $(DIE_RTL)/vhdl/mod6_residue.vhd $(DIE_RTL)/vhdl/electronic_die_fast
 
 VECFILES := $(foreach s,$(SEEDS),$(VEC)/$(s).states $(VEC)/$(s).die)
 
-.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl check-vhdl93 test-mutants analysis clean
+.PHONY: all test test-model vectors test-verilog test-vhdl test-ram test-m3 test-equiv test-fast test-m3-vhdl check-vhdl93 test-mutants analysis figures clean
 .DELETE_ON_ERROR:
 
 all: test
@@ -196,6 +198,33 @@ analysis:
 # reruns a narrowed version of the target above; the run must fail.
 test-mutants:
 	$(PYTHON) -I tools/mutants.py --make "$(MAKE)" --log docs/logs/mutants.txt
+
+# --- README figures (not part of make test; needs Pillow) -------------------
+# die_waveform.png: tb_wave runs the course die and residue_s2 side by side
+#   from one seed (and fails unless residue_s2 trails by exactly two clocks).
+# make_test.png:    a real `make test` run, kept in docs/logs/make-test.txt with
+#   the home directory shortened to ~.
+# quartus_timing.png: lines of the committed Quartus summaries, unchanged.
+FIG := docs/img
+QV  := electronic-die/synth/quartus/variants
+
+figures:
+	@mkdir -p $(BUILD)/wave
+	$(IVERILOG) $(IVFLAGS) -o $(BUILD)/wave/tb_wave.vvp $(DIE_SIM)/tb_wave.v $(V_FAST) $(DIE_RTL)/verilog/electronic_die.v
+	$(VVP) -N $(BUILD)/wave/tb_wave.vvp +vcd=$(BUILD)/wave/die_wave.vcd > $(BUILD)/wave/tb_wave.log
+	$(PYTHON) -I tools/wave_png.py $(BUILD)/wave/die_wave.vcd $(FIG)/die_waveform.png \
+	    --clock clk --enable en --signal course_result "course design (%)" --signal fast_result "residue_s2 (2 stages)" \
+	    --title "Icarus Verilog simulation, seed 122059: tossing_result of both designs" \
+	    --note "residue_s2 repeats the course design's value from two edges earlier whenever en was high at both edges (docs/verification.md, section 4). Shaded: en = 0, both hold."
+	$(MAKE) --no-print-directory test > $(BUILD)/make-test.raw 2>&1 || { tail -n 20 $(BUILD)/make-test.raw; exit 1; }
+	sed "s#$$HOME#~#g" $(BUILD)/make-test.raw > docs/logs/make-test.txt
+	$(PYTHON) -I tools/text_png.py $(FIG)/make_test.png --theme dark --title '$$ make test' \
+	    --count PASS --count FAIL --mark PASS docs/logs/make-test.txt:1-12,-8
+	$(PYTHON) -I tools/text_png.py $(FIG)/quartus_timing.png --theme light \
+	    --title 'Quartus II 9.0 SP2, Stratix II EP2S15F484C3: course design (baseline) and residue_s2' \
+	    --mark 'Actual Time' --mark 'Combinational ALUTs' \
+	    $(QV)/baseline/baseline.fit.summary:3-10 $(QV)/baseline/baseline.tan.summary:35-40 \
+	    $(QV)/residue_s2/residue_s2.fit.summary:3-10 $(QV)/residue_s2/residue_s2.tan.summary:35-40
 
 clean:
 	rm -rf $(BUILD)

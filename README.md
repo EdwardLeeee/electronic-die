@@ -35,6 +35,7 @@ Everything else was added afterwards:
 | Division-free mod-6 cores, pipelined top level (Verilog; residue core also in VHDL) | `electronic-die/rtl/{verilog,vhdl}/mod6_*`, `electronic_die_fast.*` |
 | Quartus variant projects and the generated results table | `tools/quartus.py`, `electronic-die/synth/quartus/variants/`, `docs/results.md` |
 | Derivations and design notes | `docs/design-notes.md` |
+| The figures in this README: a waveform bench and two drawing scripts (`make figures`) | `electronic-die/sim/tb_wave.v`, `tools/wave_png.py`, `tools/text_png.py`, `docs/img/` |
 
 ## How it works
 
@@ -59,6 +60,13 @@ five-level tree of identical 4-input nodes instead of a 64-step divider.
 The derivation, a worked example and the pipeline timing are in
 `docs/design-notes.md`.
 
+![Timing diagram of clk, en and the tossing_result of the course design and of residue_s2 over 28 rising edges](docs/img/die_waveform.png)
+
+*Icarus Verilog run of `electronic-die/sim/tb_wave.v`, drawn from its VCD dump by
+`tools/wave_png.py`. While `en` stays high the pipelined die shows the course
+design's values two clocks later (the bench checks this at every such edge);
+in the shaded clocks `en` is low and both outputs hold.*
+
 ## Results
 
 <!-- results:begin -->
@@ -79,12 +87,26 @@ from the committed `*.summary` files by `tools/quartus.py collect`; all rows are
 | `vhdl_residue_s2` | 2 | 109 / 40 | 93 | 493.34 | 108.0x |
 <!-- results:end -->
 
+<img src="docs/img/quartus_timing.png" width="720" alt="Quartus fit and timing summary lines for the course design (684 ALUTs, 10.96 MHz) and residue_s2 (108 ALUTs, restricted to 500.00 MHz)">
+
+*Lines copied unchanged from the committed Quartus summaries of the course design
+and of `residue_s2` (file and line numbers above each block), drawn by
+`tools/text_png.py`. "Restricted to 500.00 MHz" is the clock-pin limit of the
+device; the slowest register-to-register path needs 1.829 ns of the 2.000 ns
+([docs/results.md](docs/results.md)).*
+
 ## Running it
 
 ```
 sudo apt install -y iverilog ghdl make python3      # Ubuntu; CI uses the same packages
 make test                                           # every self-checking test
 ```
+
+![Terminal output of make test: the first 12 and last 8 lines, ending in ALL TESTS PASSED](docs/img/make_test.png)
+
+*The first 12 and last 8 lines of a real run, saved in `docs/logs/make-test.txt`
+(home directory shortened to `~`); the line in between counts the PASS and FAIL
+lines of the whole log.*
 
 Without root, the same Ubuntu packages can be unpacked into a directory and
 used from there (run from the repository root; amd64 or any other Debian
@@ -105,6 +127,7 @@ cd -  &&  ~/.local/opt/eda/usr/bin/make test EDA_HOME=$HOME/.local/opt/eda
 | `make test-m3` | both mod-6 cores against `%` (all 16-bit inputs, random 64-bit) and the pipelined die, Verilog and VHDL |
 | `make analysis` | regenerates `docs/rng_analysis.md` from the reference model (about 30 s; the chart is redrawn with `model/plot_rng.py`) |
 | `make test-mutants` | every mutant in `tools/mutants.py` must make its test fail (not part of `make test`; a few minutes) |
+| `make figures` | redraws the waveform, test-run and Quartus figures in `docs/img/` (needs Pillow; reruns `make test` for the log it shows) |
 
 The synthesis numbers come from Quartus II 9.0 SP2 Web Edition, the version
 the course used (current Quartus releases no longer support Stratix II):
@@ -112,6 +135,13 @@ the course used (current Quartus releases no longer support Stratix II):
 ```
 QUARTUS_BIN=<directory with quartus_sh> tools/run_quartus.sh   # Linux runs it through Wine
 ```
+
+## How random the die is
+
+![Die-face histograms for the course seed and a dense seed over 1,000,000 draws, and the lag autocorrelation of both](docs/img/die_histogram.png)
+
+*Drawn by `model/plot_rng.py` from the output of `model/rng_analysis.py`; the method
+and every number are in [docs/rng_analysis.md](docs/rng_analysis.md).*
 
 ## Limits
 

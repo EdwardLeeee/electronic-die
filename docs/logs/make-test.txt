@@ -1,0 +1,526 @@
+python3 -I model/ca_rng.py check
+sim/modelsim: 32 states from ModelSim, seed=122059: PASS
+sim/modelsim-vhdl: 33 states from ModelSim, seed=122059: PASS
+python3 -I model/ca_rng.py selftest
+selftest: 1024 LUT placements (16 rows x 64 cells), 4 fixed points, 10000 random states: PASS
+== verilog rng64 structural seed=122059
+PASS: rng64 structural, seed=122059, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=122059
+PASS: electronic_die structural, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 structural seed=16045690984503111693
+PASS: rng64 structural, seed=16045690984503111693, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=16045690984503111693
+PASS: electronic_die structural, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 structural seed=0
+PASS: rng64 structural, seed=0, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=0
+PASS: electronic_die structural, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 structural seed=18446744073709551615
+PASS: rng64 structural, seed=18446744073709551615, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=18446744073709551615
+PASS: electronic_die structural, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 structural seed=6148914691236517205
+PASS: rng64 structural, seed=6148914691236517205, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=6148914691236517205
+PASS: electronic_die structural, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 structural seed=12297829382473034410
+PASS: rng64 structural, seed=12297829382473034410, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die structural seed=12297829382473034410
+PASS: electronic_die structural, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=122059
+PASS: rng64 behavioral, seed=122059, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=122059
+PASS: electronic_die behavioral, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=16045690984503111693
+PASS: rng64 behavioral, seed=16045690984503111693, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=16045690984503111693
+PASS: electronic_die behavioral, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=0
+PASS: rng64 behavioral, seed=0, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=0
+PASS: electronic_die behavioral, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=18446744073709551615
+PASS: rng64 behavioral, seed=18446744073709551615, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=18446744073709551615
+PASS: electronic_die behavioral, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=6148914691236517205
+PASS: rng64 behavioral, seed=6148914691236517205, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=6148914691236517205
+PASS: electronic_die behavioral, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog rng64 behavioral seed=12297829382473034410
+PASS: rng64 behavioral, seed=12297829382473034410, 512 steps match the model
+electronic-die/sim/tb_rng64_check.v:55: $finish called at 5130000 (1ps)
+== verilog electronic_die behavioral seed=12297829382473034410
+PASS: electronic_die behavioral, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== vhdl rng64 structural seed=122059
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=122059
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 structural seed=16045690984503111693
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 structural seed=0
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=0
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 structural seed=18446744073709551615
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 structural seed=6148914691236517205
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 structural seed=12297829382473034410
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 structural, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die structural seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die structural, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=122059
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=122059
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=16045690984503111693
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=0
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=0
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=18446744073709551615
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=6148914691236517205
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl rng64 behavioral seed=12297829382473034410
+electronic-die/sim/tb_rng64_check.vhd:84:9:@5130ns:(report note): PASS: rng64 behavioral, 512 steps match the model
+simulation finished @5130ns with status 0
+== vhdl electronic_die behavioral seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:146:13:@5120ns:(report note): PASS: electronic_die behavioral, 512 edges match the contract
+simulation finished @5120ns with status 0
+~/.local/opt/eda/usr/bin/ghdl -a --std=08 --workdir=build/ghdl-ram ram-controller/rtl/seq_rw_ram.vhd ram-controller/sim/tb_seq_rw_ram.vhd
+~/.local/opt/eda/usr/bin/ghdl --elab-run --std=08 --workdir=build/ghdl-ram tb_seq_rw_ram
+ram-controller/sim/tb_seq_rw_ram.vhd:367:9:@9330ns:(report note): PASS: 3728 checks
+simulation finished @9330ns with status 0
+PASS: mod6_popcount WIDTH=16 STAGES=0: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655361000 (1ps)
+PASS: mod6_popcount WIDTH=16 STAGES=1: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655371000 (1ps)
+PASS: mod6_popcount WIDTH=16 STAGES=2: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655381000 (1ps)
+PASS: mod6_popcount WIDTH=16 STAGES=3: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655391000 (1ps)
+PASS: mod6_popcount WIDTH=16 STAGES=4: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655401000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=0: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202641000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=1: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202651000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=2: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202661000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=3: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202671000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=4: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202681000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=5: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202691000 (1ps)
+PASS: mod6_popcount WIDTH=64 STAGES=6: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202701000 (1ps)
+PASS: mod6_residue WIDTH=16 STAGES=0: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655361000 (1ps)
+PASS: mod6_residue WIDTH=16 STAGES=1: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655371000 (1ps)
+PASS: mod6_residue WIDTH=16 STAGES=2: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655381000 (1ps)
+PASS: mod6_residue WIDTH=16 STAGES=3: 65536 values (every input) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 655391000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=0: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202641000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=1: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202651000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=2: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202661000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=3: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202671000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=4: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202681000 (1ps)
+PASS: mod6_residue WIDTH=64 STAGES=5: 20264 values (directed + random) equal x % 6
+electronic-die/sim/tb_mod6_equiv.v:103: $finish called at 202691000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=122059
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=16045690984503111693
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=0
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=18446744073709551615
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=6148914691236517205
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=0 seed=12297829382473034410
+PASS: electronic_die_fast CORE=0 STAGES=0, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=122059
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=16045690984503111693
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=0
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=18446744073709551615
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=6148914691236517205
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=1 seed=12297829382473034410
+PASS: electronic_die_fast CORE=0 STAGES=1, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=122059
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=16045690984503111693
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=0
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=18446744073709551615
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=6148914691236517205
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=0 STAGES=2 seed=12297829382473034410
+PASS: electronic_die_fast CORE=0 STAGES=2, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=122059
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=16045690984503111693
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=0
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=18446744073709551615
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=6148914691236517205
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=0 seed=12297829382473034410
+PASS: electronic_die_fast CORE=1 STAGES=0, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=122059
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=16045690984503111693
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=0
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=18446744073709551615
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=6148914691236517205
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=1 seed=12297829382473034410
+PASS: electronic_die_fast CORE=1 STAGES=1, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=122059
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=16045690984503111693
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=0
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=18446744073709551615
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=6148914691236517205
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=2 seed=12297829382473034410
+PASS: electronic_die_fast CORE=1 STAGES=2, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=122059
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=16045690984503111693
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=0
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=18446744073709551615
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=6148914691236517205
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=1 STAGES=3 seed=12297829382473034410
+PASS: electronic_die_fast CORE=1 STAGES=3, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=122059
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=16045690984503111693
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=0
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=18446744073709551615
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=6148914691236517205
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=0 seed=12297829382473034410
+PASS: electronic_die_fast CORE=2 STAGES=0, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=122059
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=16045690984503111693
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=0
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=18446744073709551615
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=6148914691236517205
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=1 seed=12297829382473034410
+PASS: electronic_die_fast CORE=2 STAGES=1, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=122059
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=16045690984503111693
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=0
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=18446744073709551615
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=6148914691236517205
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=2 seed=12297829382473034410
+PASS: electronic_die_fast CORE=2 STAGES=2, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=122059
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=122059, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=16045690984503111693
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=16045690984503111693, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=0
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=0, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=18446744073709551615
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=18446744073709551615, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=6148914691236517205
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=6148914691236517205, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+== verilog electronic_die_fast CORE=2 STAGES=3 seed=12297829382473034410
+PASS: electronic_die_fast CORE=2 STAGES=3, seed=12297829382473034410, 512 edges match the contract
+electronic-die/sim/tb_die_check.v:104: $finish called at 5120000 (1ps)
+~/.local/opt/eda/usr/bin/ghdl -a --std=93 --workdir=build/ghdl93 electronic-die/rtl/vhdl/ca_cell.vhd electronic-die/rtl/vhdl/rng64.vhd electronic-die/rtl/vhdl/modulo_by_6.vhd electronic-die/rtl/vhdl/electronic_die.vhd electronic-die/rtl/vhdl/mod6_residue.vhd electronic-die/rtl/vhdl/electronic_die_fast.vhd
+PASS: synthesizable VHDL analyses as strict VHDL-93
+electronic-die/sim/tb_mod6_equiv.vhd:134:13:@655361ns:(report note): PASS: mod6_residue (VHDL) WIDTH=16 STAGES=0: 65536 values (every input) equal x mod 6
+simulation finished @655361ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:134:13:@655371ns:(report note): PASS: mod6_residue (VHDL) WIDTH=16 STAGES=1: 65536 values (every input) equal x mod 6
+simulation finished @655371ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:134:13:@655381ns:(report note): PASS: mod6_residue (VHDL) WIDTH=16 STAGES=2: 65536 values (every input) equal x mod 6
+simulation finished @655381ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:134:13:@655391ns:(report note): PASS: mod6_residue (VHDL) WIDTH=16 STAGES=3: 65536 values (every input) equal x mod 6
+simulation finished @655391ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202631ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=0: 20263 values (directed + random) equal x mod 6
+simulation finished @202631ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202641ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=1: 20263 values (directed + random) equal x mod 6
+simulation finished @202641ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202651ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=2: 20263 values (directed + random) equal x mod 6
+simulation finished @202651ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202661ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=3: 20263 values (directed + random) equal x mod 6
+simulation finished @202661ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202671ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=4: 20263 values (directed + random) equal x mod 6
+simulation finished @202671ns with status 0
+electronic-die/sim/tb_mod6_equiv.vhd:137:13:@202681ns:(report note): PASS: mod6_residue (VHDL) WIDTH=64 STAGES=5: 20263 values (directed + random) equal x mod 6
+simulation finished @202681ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=0 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=0 STAGES=1 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=0 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=0 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=0, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=1 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=1, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=2 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=2, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=122059
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=16045690984503111693
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=0
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=18446744073709551615
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=6148914691236517205
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+== vhdl electronic_die_fast CORE=2 STAGES=3 seed=12297829382473034410
+electronic-die/sim/tb_die_check.vhd:143:13:@5120ns:(report note): PASS: electronic_die_fast (VHDL) CORE=2 STAGES=3, 512 edges match the contract
+simulation finished @5120ns with status 0
+ALL TESTS PASSED
