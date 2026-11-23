@@ -1,5 +1,7 @@
 # Electronic die: a verified, measured and pipelined 64-bit CA random-number generator
 
+**English** | [中文](README.zh-TW.md)
+
 A small digital-design project built on top of a course assignment. A
 64-cell cellular automaton (CA) produces a new 64-bit state every clock; the
 die shows `(state mod 6) + 1`. This repository adds a reference model,
